@@ -1,0 +1,138 @@
+.timeline {
+  border: 1px solid #1e8243;
+  border-radius: 10px;
+  width: 80%;
+  margin: auto;
+  height: fit-content;
+  padding: 20px;
+  margin-top: 25px;
+  position: relative;
+}
+.photo-name {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: center;
+}
+.photo-name > * {
+  margin-right: 10px;
+  align-self: center;
+}
+.timeline .photo-profile {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid #1e8243;
+}
+.info .info-name {
+  font-weight: bold;
+  font-size: 20px;
+}
+.info .info-date {
+  margin-top: -5px;
+  color: gray;
+}
+.timeline .news {
+  padding: 20px 5px 5px;
+}
+.timeline .news-en {
+  direction: ltr !important;
+}
+.timeline .news-ar {
+  direction: rtl !important;
+}
+textarea {
+  padding: 5px;
+  font-size: 18px;
+  border: none;
+  width: 100%;
+  resize: none;
+}
+.timeline .line {
+  height: 1px !important;
+  background-color: #1e8243;
+}
+.like-comment-p {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+}
+.like-comment,
+.number-like-comment {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  align-content: center;
+  margin-top: 10px;
+}
+.like-comment > *,
+.number-like-comment > * {
+  margin-right: 10px;
+}
+.live-photo .fa-video,
+.live-photo .fa-photo-film {
+  color: #1e8243;
+}
+.like-comment .fa-solid {
+  font-size: 22px;
+  margin-top: 5px;
+}
+a {
+  color: black;
+}
+
+.comments_repos {
+  border: 1px solid #ceecd9;
+  margin: 20px auto;
+  padding: 10px;
+  transition: all 1s ease-in-out;
+  max-height: 250px;
+  position: relative;
+  overflow-y: scroll;
+  width: 75%;
+}
+.comment .avatar {
+  display: inline-block;
+}
+.comment .avatar .comment-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #1e8243;
+}
+
+.comment .avatar .comment-info .username {
+  font-weight: bold;
+  font-style: italic;
+}
+.comment .comment_content {
+  background-color: #ceecd9;
+  padding: 10px;
+  border: 1px solid #1e8243;
+  border-end-end-radius: 50px;
+  border-top-right-radius: 50px;
+  border-end-start-radius: 50px;
+  color: black;
+}
+.timeline .likes_repos {
+  border: 1px solid #ceecd9;
+  background-color: rgba(0, 0, 0, 0.749);
+  padding: 10px;
+  transition: all 1s ease-in-out;
+  max-height: 250px;
+  width: 315px;
+  position: absolute;
+  right: 0;
+  z-index: 10;
+  overflow-y: scroll;
+}
+.like-repos-hide {
+  display: none !important;
+}
+.timeline .likes_repos .list-group > * {
+  background-color: rgba(0, 0, 0, 0.742) !important;
+}
+.timeline .likes_repos .list-group > * > * {
+  color: white !important;
+}

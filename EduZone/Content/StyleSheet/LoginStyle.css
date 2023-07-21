@@ -1,0 +1,186 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Montserrat", sans-serif;
+    background-image: url(../Images/banner4-cssxk4.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: rgb(250, 244, 244);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #439962;
+    border-radius: 20px;
+}
+
+.container {
+    padding: 0 15px;
+    margin: 0 auto;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(52 129 64 / 60%);
+}
+
+.container form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 97vh;
+    width: 100%;
+    margin: auto;
+    height: 100%;
+}
+
+.left {
+    position: relative;
+    left: 2px;
+    z-index: 2;
+    background-color: #69b984;
+    border: none;
+    outline: none;
+    width: 600px;
+    height: 620px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    box-shadow: rgb(18 17 17) 3px 5px 8px;
+}
+
+    .left .logo {
+        width: 70px;
+        margin-top: 50px;
+        margin-left: 50px;
+    }
+
+    .left h2 {
+        color: white;
+        font-size: 40px;
+        line-height: 1.8;
+        margin: 30px 50px;
+        font-weight: bold;
+    }
+
+    .left span {
+        display: block;
+    }
+
+    .left h1 {
+        font-size: 60px;
+        margin-left: 45px;
+        margin-top: -24px;
+        color: white;
+    }
+
+    .left .log {
+        width: 250px;
+        height: 166px;
+        margin-left: 30px;
+    }
+
+.right {
+    position: relative;
+    z-index: 2;
+    background-color: #fff;
+    border: none;
+    outline: none;
+    width: 600px;
+    height: 620px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: rgb(18 17 17) 3px 5px 8px;
+}
+
+    .right h2 {
+        font-weight: bold;
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+    .right input {
+        border: 1px solid #c9e5d7;
+        border-radius: 8px;
+        padding: 15px 15px;
+        width: 400px;
+        outline: none;
+    }
+
+    .right .form-control:focus, .right .form-select:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    }
+
+a {
+    text-decoration: none;
+    color: #201d1d;
+}
+
+.right .forget {
+    right:0;
+    color: #28a745;
+}
+
+.btn-width {
+    width: 196px !important;
+}
+
+.right .sign {
+    color: #69b984;
+}
+
+.form-select option:hover {
+    background-color: #28a745 !important;
+}
+
+.wrapper {
+    position: relative;
+}
+
+    .wrapper input::placeholder {
+        font-size: 17px;
+    }
+
+    .wrapper span {
+        position: absolute;
+        right: 17px;
+        top: 35%;
+        /* transform: translateY(-50%); */
+        font-size: 20px;
+        color: #8e44ad;
+        cursor: pointer;
+        display: none;
+    }
+
+    .wrapper input:valid ~ span {
+        display: block;
+    }
+
+    .wrapper span i.hide-btn::before {
+        content: "\f070";
+    }
+
+input[type=password]::-ms-reveal,
+input[type=password]::-ms-clear {
+    display: none;
+}

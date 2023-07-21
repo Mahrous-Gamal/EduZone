@@ -1,0 +1,60 @@
+﻿@using EduZone.Models
+@using Microsoft.AspNet.Identity;
+@using System.Linq;
+@model PostInGroup
+<link href="~/Content/StyleSheet/time-line-for-dector.css" rel="stylesheet" />
+@{
+    ApplicationDbContext context = new ApplicationDbContext();
+    string UserID = User.Identity.GetUserId();
+}
+@using (Html.BeginForm("UpdatePost", "Group", FormMethod.Post, new { @class = "mt-5", enctype = "multipart/form-data" }))
+{
+    string val = @Model.ContentOfPost;
+    val = val.Replace("</p>", "\n");
+    val = val.Replace("<p class=\" news-ar\" >", "");
+    val = val.Replace("<p class=\" news-en\" >", "");
+<div class="timeline ">
+    <div class="photo-name">
+        <img class="photo-profile" src="~/Images/@context.Users.FirstOrDefault(e => e.Id == UserID).Image" alt="doctor" />
+        <div class="info">
+            <h2 class="info-name">@context.Users.FirstOrDefault(e => e.Id == UserID).Name</h2>
+        </div>
+    </div>
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="GrpCode" value=@ViewBag.GC />
+    <textarea class="m-3"  id="ContentOfPost" placeholder="Write new announcement..."> @val </textarea>
+    <div class="w-100">
+        <input type="file" name="File" id="fileInput" style="display: none;" accept="image/*,video/*" onchange="onFileSelected(event)" />
+    </div>
+    <input type="text" id="Hiddenitem" name="content" style="display: none;" />
+
+    <div class="line"></div>
+
+    <div class="like-comment live-photo">
+
+        <button type="submit" class="btn btn-outline-success" onmouseover="ChangeText()"> Update </button>
+    </div>
+</div>
+}
+
+@section bottom_Link{
+    
+    <script>
+        function ChangeText() {
+            var textarea = document.getElementById("ContentOfPost");
+            var HiddenInput = document.getElementById("Hiddenitem");
+            const lines = textarea.value.split("\n");
+            var Resualt = "";
+            for (const line of lines) {
+                const arabicRegex = /[\u0600-\u06FF]/;
+                if (arabicRegex.test(line)) {
+                    Resualt += "<p class=\" news-ar\" >" + line + "</p>";
+                } else {
+                    Resualt += "<p class=\" news-en\" >" + line + "</p>";
+                }
+
+            }
+            HiddenInput.value = Resualt;
+        }
+    </script>
+}

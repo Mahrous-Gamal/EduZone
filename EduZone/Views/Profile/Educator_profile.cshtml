@@ -1,0 +1,27 @@
+﻿@model EduZone.Models.Educator
+@{
+    ViewBag.Title = "Educator_profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<link href="~/Content/StyleSheet/profile.css" rel="stylesheet" />
+<main class="container my-3 main-profile">
+    <div class="avatar">
+        <img class="photo-profile" src="~/Images/@ViewBag.image" alt="">
+    </div>
+
+    <div class="update-profile">
+        <div class="base-info">
+            <h2 class="fs-2 fw-bold">@ViewBag.name</h2>
+            <a href="/chat/Chat_with_one/@ViewBag.id">Chat</a>
+        </div>
+
+        <ul>
+            <li><span class="fw-bold">Educator Email:</span> @ViewBag.email</li>
+            <li><span class="fw-bold">Educator NationalID:</span> @ViewBag.nationalId</li>
+            @*<li><span class="fw-bold">AcademicDegree</span> @Model.AcademicDegree</li>*@
+            <li><span class="fw-bold">Address:</span>  @ViewBag.address</li>
+        </ul>
+    </div>
+
+</main>

@@ -1,0 +1,39 @@
+﻿@using EduZone.Models.ViewModels
+@model List<ExtraInfoOfDegreeOfExam>
+@{
+    int cont = 1;
+    ViewBag.Title = "ShowDegreeOfExam";
+}
+@Html.Partial("_GroupPartialView")
+<div class="mb-4">
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Exam Name</th>
+                <th scope="col">Doctor</th>
+                <th scope="col">Degree</th>
+                <th scope="col">Total Degree</th>
+                <th scope="col">Show Exam</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th scope="row">@cont</th>
+                    <td>@item.ExamName</td>
+                    <td>@item.DoctorCreate</td>
+                    <td>@item.ExamDegree</td>
+                    <td>@item.TotalDegreeOfExam</td>
+                    <td><a class="btn btn-outline-primary" href="/Student/StudentAnswer?ExamId=@item.ExamID&&StudentId=@item.StudentID"> Show</a></td>
+                </tr>
+                cont++;
+            }
+
+        </tbody>
+    </table>
+
+</div>

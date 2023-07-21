@@ -1,0 +1,88 @@
+﻿@using EduZone.Models.ViewModels
+@model BasicInfo
+@{
+    ViewBag.Title = "BasicInfo";
+}
+
+
+<div class="tab-pane fade show active">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <h3 >Account Settings</h3>
+        <hr class="mb-4"/>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" class="form-control" required value="@Model.Name" name="Name">
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>National ID</label>
+                    <input type="text" class="form-control" required value="@Model.NationalID" name="NationalID">
+                    @Html.ValidationMessageFor(m => m.NationalID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="text" class="form-control" required value="@Model.Phone" name="Phone">
+                    @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Age</label>
+                    <input type="text" class="form-control" required value="@Model.Age" name="Age">
+                    @Html.ValidationMessageFor(m => m.Age, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Gender</label>
+                    <input type="text" class="form-control" value="@Model.Gender" name="Gender" readonly id="Gender">
+
+                    <input class="form-check-input" type="radio" value="Male" name="r1" id="Male" onclick="changeText(this)">
+                    <label class="form-check-label me-2" for="Male">
+                        Male
+                    </label>
+
+                    <input class="form-check-input" type="radio" value="Female" name="r1" id="Female" onclick="changeText(this)">
+                    <label class="form-check-label" for="Female">
+                        Femail
+                    </label>
+
+                    @Html.ValidationMessageFor(m => m.Gender, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Address</label>
+                    <textarea class="form-control" rows="4" required name="Address"> @Model.Address</textarea>
+                    @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div>
+            <input class="btn btn-primary" type="submit" value="Update">
+        </div>
+
+    }
+</div>
+@section bottom_Link{
+    <script>
+        function changeText(radio) {
+            var value = radio.value;
+            var textInput = document.getElementById("Gender");
+            textInput.value = value;
+        }
+
+        var item = document.getElementsByClassName("item1");
+        console.log(item[0]);
+        item[0].classList.add("active");
+    </script>
+   
+}

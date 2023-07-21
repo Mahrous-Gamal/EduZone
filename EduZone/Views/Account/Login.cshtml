@@ -1,0 +1,69 @@
+﻿@using EduZone.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+    Layout = null;
+}
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+<link href="~/Content/StyleSheet/LoginStyle.css" rel="stylesheet" />
+<div class="container">
+    <div class="overlay"></div>
+    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="left">
+            <img src="~/Images/logo.png" class="logo" />
+            <h2>
+                Welcome <span> Back To </span>
+                <h1>EduZone!</h1>
+            </h2>
+            <img src="~/Images/log.png" class="log" />
+        </div>
+        <div class="right">
+            <h2>Log in</h2>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger m-0 p-0" })
+
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Example@compit.aun.edu.eg" })
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+
+        <div class="form-floating wrapper mb-2 mt-3">
+            <input type="password" name="Password" class="form-control pass-inpt" placeholder="Enter Password" id="floatingInputGrid2" required>
+            <span class="show-btn"> <i class="fa-solid fa-eye"> </i></span>
+            <label for="floatingInputGrid2">Password</label>
+        </div>
+            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            <a href="/Account/ForgotPassword" class="forget mt-1">Forget Password?</a>
+
+            <input type="submit" value="Log in" name="submit" class="mt-1 mb-1 btn btn-success" />
+            <span>
+                New User?
+                <a href="/Account/Register" class="sign">Sign Up</a>
+            </span>
+        </div>
+    }
+</div>
+}
+<script src="~/Scripts/jquery-3.6.4.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+<script>
+    const passField = document.querySelectorAll(".pass-inpt");
+    const showBtn = document.querySelectorAll("span i");
+    for (let i = 0; i < passField.length; i++) {
+        showBtn[i].onclick = (() => {
+            if (passField[i].type === "password") {
+                passField[i].type = "text";
+                showBtn[i].classList.add("hide-btn");
+            } else {
+                passField[i].type = "password";
+                showBtn[i].classList.remove("hide-btn");
+            }
+        });
+    }
+    
+    onload = function () {
+        document.getElementById("Password").removeAttribute("value");
+    }
+</script>

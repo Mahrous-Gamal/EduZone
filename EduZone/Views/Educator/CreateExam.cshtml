@@ -1,0 +1,93 @@
+﻿@using EduZone.Models
+@model List<Group>
+@{
+    ViewBag.Title = "CreateExam";
+}
+@section Top_Link{
+    <link href="~/Content/StyleSheet/create-exam.css" rel="stylesheet" />
+}
+<main class="container my-3 main-profile">
+    <form method="post" class="bg-light p-4">
+        <h3 class="mb-3"> Form Details </h3>
+        <div class='form-info'>
+            <div class="mb-3">
+                <label for="inputFormCode" class="form-label">Group Name</label>
+                <select name="Group_Name" class="dropdown form-control" >
+                    @foreach (var item in Model)
+                    {
+                        <option value="@item.Code" class="dropdown-item">@item.GroupName</option>
+                    }
+                </select>
+            </div>
+            <div class="mb-5">
+                <label for="inputFormTitle" class="form-label">Form Title</label>
+                <input name="Form_Title" type="text" required placeholder='Enter the Form title...' class="form-control" id="inputFormTitle" aria-label="Text input with checkbox">
+            </div>
+            <h4 class="mb-3"> Form Questions </h4>
+            <div class='d-flex justify-content-between'>
+                <div class="me-3">
+                    <label for="N_question_input">Number of Questions</label>
+                    <label class="fw-bold" id="NQ">1</label>
+                    <input type="hidden" name="N_question" id="N_question" value="1">
+                </div>
+                <div class="header d-flex justify-content-start mb-5">
+                    <button type='button' class='btn btn-sm btn-outline-info mx-1' onclick="add_Q()" ; id='add_question'> Add Question </button>
+                    
+                </div>
+            </div>
+            <!-- All-Q  -->
+            <div class='questions container' id='questions_id'>
+                <!-- q-n-  -->
+                <div class='question row' id="Q0">
+                    <div class="col-11">
+                        <!-- Q-H -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-text">
+                                <label class='m-0 question_number' id="QNtxt0">Q0</label>
+                            </div>
+                            <textarea id="QInput0" name="Q0" class="form-control question_title" required placeholder='Enter the question title...'></textarea>
+                        </div>
+                        <!-- Q-H -->
+                        <!-- O-n-  -->
+                        <div class='m-3'>
+                            <div id="Q0O">
+                                <input type="text" style="display: none;" value="2" id="ON0">
+                                <div class="input-group mb-3 option" id="O00">
+                                    <div class="input-group-text">
+                                        <input class=" mt-0 p-0" value="0" id="Q0R0" type="radio" name="QR0" required>
+                                    </div>
+                                    <input id="Q0I0" name="Q0I0" class="form-control option_title" type="text" required placeholder='Enter the option title...'>
+                                </div>
+                                <div class="input-group mb-3 option" id="O01">
+                                    <div class="input-group-text">
+                                        <input class=" mt-0 p-0" value="1" id="Q0R1" type="radio" name="QR0" required>
+                                    </div>
+                                    <input id="Q0I1" name="Q0I1" class="form-control option_title" type="text" required placeholder='Enter the option title...'>
+                                </div>
+                            </div>
+                            <button type="button" id="btn_add0" onclick="add_option(0)" class="btn btn-sm btn-outline-info px-2 me-2">Add Option</button>
+                            <button type="button" id="btn_sub0" onclick="sub_option(0)" class="btn btn-sm btn-outline-info px-2"> Delete last Option </button>
+                            <div class="mx-3 d-inline">
+                                <label>Points</label>
+                                <input type="number" value="1" name="QPI0" id="QPI0" min="0" max="100">
+                            </div>
+                        </div>
+                        <!-- O-n-  -->
+                    </div>
+                    <div class="col-1">
+                        <button class="btn" id="Del_Q0" onclick="del_question(0)">
+                            <i class="fa-solid fa-delete-left" style="color: #ff1100;"></i>
+                        </button>
+                    </div>
+                    <hr>
+                </div>
+                <!-- q-n-  -->
+            </div>
+            <!-- All-Q  -->
+            <input type="submit" id='submit_btn' value="Create Form" class="btn btn-success">
+        </div>
+    </form>
+</main>
+@section bottom_Link{
+    <script src="~/Scripts/assessment_create.js"></script>
+}

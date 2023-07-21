@@ -1,0 +1,214 @@
+﻿
+@using Microsoft.AspNet.Identity;
+@using EduZone.Models
+@model List<ChatGroup>
+@{
+    ViewBag.Title = "Group_Chat";
+    string oldUserId = null;
+
+}
+@section Top_Link{
+    <link href="~/Content/StyleSheet/chat2.css" rel="stylesheet" />
+    <link href="~/Content/StyleSheet/input.css" rel="stylesheet" />
+}
+@Html.Partial("_GroupPartialView")
+
+
+<div class="tab-content p-3 my-3">
+    <div class="tab-pane active" id="Chat">
+        <div class="card chat-app">
+            <div class="chat ms-0">
+                <div class="chat-header clearfix">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="chat-about">
+                                <h2 class="m-b-0">Global Chat</h2>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-6 hidden-sm text-end">
+                            <a href="javascript:void(0);" class="btn btn-outline-info"><i class="fa fa-cogs"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-history">
+                    <div class="message-previous previous">
+                        <a onclick="previous(this)" id="ankitjain28" name="20">
+                            Show Previous Message!
+                        </a>
+                    </div>
+                    <ul class="m-b-0" id="mess">
+                        @if (Model.Count != 0)
+                        {
+                            string userid = User.Identity.GetUserId();
+                            for (int i = 0; i < Model.Count; i++)
+                            {
+                                if (i > 0)
+                                {
+                                    oldUserId = Model[i - 1].UserId;
+                                }
+
+                                if (Model[i].UserId == userid)
+                                {
+                                    if (Model[i].IsImage == true)
+                                    {
+                                        <li class="clearfix">
+                                            <img src="~/Images/@Model[i].MessageContant">
+                                            <div class="about">
+                                                <a class="name" href="/Profile/ShowProfile/@Model[i].UserId">
+                                                    @Model[i].UserName
+                                                </a>
+                                            </div>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="clearfix">
+                                            <div class="message my-message">
+                                                @Model[i].MessageContant
+                                                <br /> <span class="message-data-time" style="float:right; font-size:13px;">@Model[i].time</span>
+                                            </div>
+                                        </li>
+                                    }
+                                }
+                                else
+                                {
+                                    <li class="clearfix">
+                                        <div class="message-data text-end">
+
+                                            @if (oldUserId == Model[i].UserId)
+                                            {
+
+                                            }
+                                            else
+                                            {
+                                                <a href="/Profile/ShowProfile/@Model[i].UserId" class="message-sender">@Model[i].UserName</a>
+                                                if (Model[i].Image == null)
+                                                {
+                                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/Images/@Model[i].Image" alt="avatar">
+                                                }
+                                            }
+
+                                        </div>
+                                        <div class="message other-message float-end">
+                                            @Model[i].MessageContant
+                                            <br /> <span class="message-data-time" style="float:right; font-size:13px;">@Model[i].time</span>
+                                        </div>
+                                    </li>
+                                }
+                            }
+                        }
+                    </ul>
+                </div>
+                <div class="chat-message row">
+                    <div class="cont">
+                        <div class="input">
+                            <input  id="txtMesg" type="text" class="input" placeholder="What's on your mind?" />
+                        </div>
+                        <div class="icon">
+
+                            <i class="fa-regular fa-face-smile fa-lg me-2" style="color: gray; cursor: pointer;"></i>
+                            <i class="fa-regular fa-image fa-lg me-2" style="color: gray; cursor: pointer;"></i>
+                            <i class="fa-solid fa-paper-plane fa-lg " style="color:gray;cursor:pointer;" onclick="send()" id="sendButton"></i>
+                        </div>
+                    </div>
+                    <!--<div class="input-group mb-0 col-8">
+                        <div class="input-group-text">
+                            <input type="button" value="Send" id="sendButton" onclick="send()">
+                        </div>
+                        <input type="text" id="txtMesg" class="form-control" placeholder="Enter text here...">
+                        <label for="file-input">-->
+                            @*<button class="btn btn-outline-primary" id="sendImage">Image</button>*@
+                            <!--<i class="fa-regular fa-image fa-2xl"></i>
+                        </label>-->
+
+                        @*<input id="file-input" class=" visually-hidden"  onchange="sendImage()" type="file" accept="image/*" />*@
+
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section bottom_Link{
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.4.3.js"></script>
+    <script src="~/Signalr/hubs"></script>
+
+    <script>
+        console.log("script");
+        let prox = '';
+        let oldId = '';
+        $(function () {
+
+            console.log("functoin");
+            var con = $.hubConnection();
+
+            prox = con.createHubProxy("ChatGroupHub");
+
+            con.start();
+
+            prox.on("showMessage", function (id, time, message, image, name, oldId){
+                console.log("showMessage");
+                var userid ='@User.Identity.GetUserId()';
+                let myVar = '';
+                if (userid === id)
+                {
+                    myVar += '<li class="clearfix">';
+                    myVar += '<div class="message-data">';
+                    myVar += '</div>';
+                    myVar += '<div class="message my-message">' + message;
+                    myVar += ' <br /> <span class="message-data-time" style="float:right; font-size:13px;">' + time + 'Today</span> </div>';
+                    myVar += '</li>';
+                }
+                else
+                {
+                    if (oldId == id) {
+                        myVar += '<li class="clearfix">';
+                        myVar += '<div class="message-data text-end">';
+                        myVar += '</div>';
+                        myVar += '<div class="message other-message float-end">' + message;
+                        myVar += ' <br /> <span class="message-data-time" style="float:right; font-size:13px;">' + time + 'Today</span> </div > ';
+                        myVar += '</li>';
+                    }
+
+                    else {
+                        myVar += '<li class="clearfix">';
+                        myVar += '<div class="message-data text-end">';
+                        myVar += '<span class="message-sender">' + name + '</span>';
+                        if (image == null) {
+                            myVar += ' <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">';
+                        }
+                        else {
+                            myVar += '<img src="/Images/' + image + '" alt="avatar">';
+                        }
+
+                        myVar += '</div>';
+                        myVar += '<div class="message other-message float-end">' + message;
+                        myVar += ' <br /> <span class="message-data-time" style="float:right; font-size:13px;">' + time + 'Today</span> </div > ';
+                        myVar += '</li>';
+                    }
+                }
+                $("#mess").append(myVar);
+            })
+        })
+
+        function send() {
+            const message = document.getElementById("txtMesg").value;
+            if (message!="") {
+                console.log("send");
+            var userid ='@User.Identity.GetUserId()';
+           
+            prox.invoke("SendMessage", userid, message, '@ViewBag.GC');
+            document.getElementById("txtMesg").value = "";
+            }
+        }
+
+
+    </script>
+}

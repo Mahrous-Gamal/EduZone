@@ -1,0 +1,50 @@
+﻿
+
+
+@using Microsoft.AspNet.Identity;
+<div class="bannar-img ">
+    <img class=" rounded-3 " height="280px" src="/Images/banner4-cssxk4.jpg" alt="bg-group-img" width="100%">
+</div>
+<div class="group-info px-5 my-3 row">
+    <div class="g-name col-10">
+        <h2 class="text-success"> @ViewBag.GN </h2>
+        <p class="text-secondary">@ViewBag.GD.</p>
+    </div>
+    <div class="g-btn col-2 d-flex justify-content-end">
+        @if (ViewBag.GCR7 == User.Identity.GetUserId())
+        {
+            <a class="btn btn-sm btn-outline-danger align-self-center" href="@Url.Action("DeleteGroup","Group",new { GCode=@ViewBag.GC})">Delete</a>
+        }
+        else
+        {
+            <a class="btn btn-sm btn-outline-danger align-self-center" href="@Url.Action("LeaveGroup","Group",new { GroupCode=@ViewBag.GC})">Leave</a>
+        }
+    </div>
+</div>
+<div class="group-body p-5">
+    <div role="tabpanel">
+        <ul class="nav nav-tabs font-alt d-flex justify-content-start" role="tablist">
+            <li class="active mx-3">
+                <a class="text-success h5" href="@Url.Action("Group_Post", "Group", new { GroupCode = @ViewBag.GC })"> Posts </a>
+            </li>
+            <li class="mx-3">
+                <a class="text-success h5" href="@Url.Action("Group_Material", "Group", new { GroupCode = @ViewBag.GC })">Materials</a>
+            </li>
+            <li class="mx-3">
+                <a class="text-success h5" href="@Url.Action("Group_Member", "Group", new { GroupCode = @ViewBag.GC })">Members</a>
+            </li>
+            <li class="mx-3">
+                <a class="text-success h5" href="@Url.Action("Group_Chat", "Group", new { GroupCode = @ViewBag.GC })">Chat</a>
+            </li>
+            @if (User.IsInRole("Student"))
+            {
+                <li class="mx-3">
+                    <a class="text-success h5" href="@Url.Action("ShowDegreeOfExam", "Group", new { GroupCode = @ViewBag.GC })">Exam Degree</a>
+                </li>
+            }
+            <li class="mx-3">
+                <a class="text-success h5" href="@Url.Action("Group_About", "Group", new { GroupCode = @ViewBag.GC })">About</a>
+            </li>
+        </ul>
+    </div>
+</div>

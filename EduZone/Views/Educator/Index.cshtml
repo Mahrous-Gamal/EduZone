@@ -1,0 +1,94 @@
+﻿@using EduZone.Models
+@model List<Exam>
+@{
+    ViewBag.Title = "Index";
+    ApplicationDbContext context = new ApplicationDbContext();
+    int TDegree = 0;
+
+}
+
+@section Top_Link{
+    <link href="~/Content/StyleSheet/addCourses.css" rel="stylesheet" />
+}
+
+<div class="cont" id="blur">
+    <h4 class="mt-3"> List of Exams</h4>
+    <hr />
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 mt-3">
+        @foreach (var item in Model)
+        {
+            int idx = item.Id;
+            var Num = context.GetQuestions.Where(e => e.ExamId == idx).Count();
+            if (Num > 0)
+            {
+                TDegree = context.GetQuestions.Where(e => e.ExamId == idx)
+                                                   .Select(e => e.Point)
+                                                   .Sum();
+            }
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.GroupName</h5>
+                        <p class="card-text small">
+                            From Title : <span class="badge text-bg-info">@item.FormTitle</span>
+                        </p>
+                        <p class="card-text small text-secondary">
+                            Total Exam Degree : @TDegree
+                        </p>
+                        <p class="card-text small text-secondary">
+                            Number of Question :  @Num
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="/Educator/UpdateExam/@item.Id" class="btn btn-sm btn-outline-success" style="width:100px;"> Update </a>
+                        <a href="#" class="btn btn-outline-danger btn-sm del" onclick="toggle(@item.Id)" style="width:100px;">Delete</a>
+                        @if (item.IsStart == false)
+                        {
+                            <a href="#" class="btn btn-outline-success mt-1 btn-sm del w-100" onclick="toggle1(@item.Id)">Start Exam</a>
+                        }
+                        else
+                        {
+                            <a href="/Educator/StartExam/@item.Id" class="btn btn-outline-danger mt-1 btn-sm del w-100">End Exam</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div id="popup">
+    <h3>Do You Want To Delete This Exam ?</h3>
+    <a href="" id="BtnYes" class="btn btn-danger delete">Yes</a>
+    <a href="#" class="btn btn-success" onclick="toggle(0)">No</a>
+</div>
+<div id="popup1">
+    <h3>Do You Want To Start Show Exam to Student ?</h3>
+    <a href="" id="BtnYes1" class="btn btn-danger delete">Yes</a>
+    <a href="#" class="btn btn-success" onclick="toggle1(0)">No</a>
+</div>
+@section bottom_Link{
+    <script>
+        var btn = document.getElementById("BtnYes");
+        var btn1 = document.getElementById("BtnYes1");
+        // toggle blur and popup
+        function toggle(val) {
+            btn.href = '/Educator/DeleteExam/' + val;
+            let blur = document.getElementById("blur");
+            blur.classList.toggle("active");
+
+            let popup = document.getElementById("popup");
+            popup.classList.toggle("active");
+        }
+        function toggle1(val) {
+            btn1.href = '/Educator/StartExam/' + val;
+
+            let blur = document.getElementById("blur");
+            blur.classList.toggle("active");
+
+            let popup = document.getElementById("popup1");
+            popup.classList.toggle("active");
+        }
+    </script>
+}
+

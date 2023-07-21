@@ -1,0 +1,142 @@
+﻿@using EduZone.Models.ViewModels
+@model AddAdminViewModel
+@{
+    ViewBag.Title = "AddAdmin";
+
+}
+@section Top_Link{
+    <link href="~/Content/StyleSheet/addCourses.css" rel="stylesheet" />
+}
+<div class="cont" id="blur">
+    @if (ViewBag.Operation == "Add")
+    {
+    <form action="" id="add-department">
+        <h2>Add Addmin</h2>
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="d-flex w-100">
+            <div class="inputbox">
+                <input type="text" id="department-id" name="Name" />
+                <span>Name</span>
+            </div>
+            <div class="inputbox">
+                <input type="text" id="department-name" name="NationalID" />
+                <span>National ID</span>
+            </div>
+        </div>
+        <div class="d-flex w-100">
+            <div class="inputbox">
+                <input type="text" id="department-id" placeholder="01*********" name="phone" />
+                <span>Phone</span>
+            </div>
+            <div class="inputbox">
+                <input type="text" id="department-name" placeholder="Male or Felmale" name="Gender" />
+                <span>Gender</span>
+            </div>
+        </div>
+        <div class="d-flex w-100">
+            <div class="inputbox ">
+                <input type="text" id="department-description" name="Email" />
+                <span>Email</span>
+            </div>
+            <div class="inputbox">
+                <input type="text" id="department-description" name="Age" />
+                <span>Age</span>
+            </div>
+        </div>
+        <div class="inputbox">
+            <input type="text" id="department-admin" name="Address" />
+            <span>Address</span>
+        </div>
+        <div class="d-grid gap-2">
+            <input type="submit" value="Add" class="btn btn-success add-btn" />
+        </div>
+    </form>
+    }
+    else
+    {
+        <form action="/Admin/UpdateAdmin/@Model.id" id="add-department">
+            <h2>Add Addmin</h2>
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger"})
+            <div class="d-flex w-100">
+                <div class="inputbox">
+                    <input type="text" id="department-id" name="Name" value="@Model.Name"/>
+                    <span>Name</span>
+                </div>
+                <div class="inputbox">
+                    <input type="text" id="department-name" name="NationalID" value="@Model.NationalID" />
+                    <span>National ID</span>
+                </div>
+            </div>
+            <div class="d-flex w-100">
+                <div class="inputbox">
+                    <input type="text" id="department-id" placeholder="01*********" name="phone" value="@Model.NationalID" />
+                    <span>Phone</span>
+                </div>
+                <div class="inputbox">
+                    <input type="text" id="department-name" placeholder="Male or Felmale" name="Gender" value="@Model.Gender" />
+                    <span>Gender</span>
+                </div>
+            </div>
+            <div class="d-flex w-100">
+                <div class="inputbox ">
+                    <input type="text" id="department-description" name="Email" value="@Model.Email" />
+                    <span>Email</span>
+                </div>
+                <div class="inputbox">
+                    <input type="text" id="department-description" name="Age" value="@Model.Age"/>
+                    <span>Age</span>
+                </div>
+            </div>
+            <div class="inputbox">
+                <input type="text" id="department-admin" name="Address" value="@Model.Address" />
+                <span>Address</span>
+            </div>
+            <div class="d-grid gap-2">
+                <input type="submit" value="Update" class="btn btn-success add-btn" />
+            </div>
+        </form>
+    }
+
+    <div class="right w-100">
+        <table class="table table-bordered table-striped table-primary">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>National ID</th>
+                    <th>Phone</th>
+                    <th>Gender</th>
+                    <th>Email</th>
+                    <th>Age</th>
+                    <th>More</th>
+                </tr>
+            </thead>
+            <tbody id="department-list">
+                @foreach (var item in ViewBag.ListOfAdmin)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.NationalID</td>
+                        <td>@item.phone</td>
+                        <td>@item.Gender</td>
+                        <td>@item.Email</td>
+                        <td>@item.Age</td>
+                        <td>
+                            <a href="/Admin/UpdateAdmin/@item.id" class="btn btn-secondary btn-sm edit">Edit</a>
+                            <a href="#"
+                               class="btn btn-danger btn-sm del"
+                               onclick="toggle()">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+</div>
+<div id="popup">
+    <h3>Do You Want To Delete This Department?</h3>
+    <a href="#" class="btn btn-danger delete">Yes</a>
+    <a href="#" class="btn btn-success" onclick="toggle()">No</a>
+</div>

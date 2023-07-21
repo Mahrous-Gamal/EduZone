@@ -1,0 +1,29 @@
+﻿@model EduZone.Models.Student
+@{
+    ViewBag.Title = "std_profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<link href="~/Content/StyleSheet/profile.css" rel="stylesheet" />
+<main class="container my-3 main-profile">
+    <div class="avatar">
+        <img class="photo-profile" src="~/Images/@ViewBag.image" alt="">
+    </div>
+
+    <div class="update-profile">
+        <div class="base-info">
+            <h2 class="fs-2 fw-bold">@ViewBag.name</h2>
+
+        </div>
+        <ul>
+            <li><span class="fw-bold">Student ID:</span> @Model.ID</li>
+            <li><span class="fw-bold">Student Email:</span> @ViewBag.email</li>
+            <li><span class="fw-bold">Student NationalID:</span> @ViewBag.nationalId</li>
+            <li><span class="fw-bold">Batch:</span> @Model.Batch</li>
+            <li><span class="fw-bold">Department:</span> @Model.Department</li>
+            <li><span class="fw-bold">GPA:</span>@Model.GPA</li>
+            <li><span class="fw-bold">Address:</span>  @ViewBag.address</li>
+        </ul>
+    </div>
+
+</main>

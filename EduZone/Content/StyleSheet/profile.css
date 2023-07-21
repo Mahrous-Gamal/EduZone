@@ -1,0 +1,63 @@
+
+.main-profile{ 
+  display: flex;
+  flex-direction: column;
+  flex-flow: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;  
+}
+.avatar{
+  position: relative;
+}
+.photo-profile {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 2px solid #1e8243;
+}
+.fa-camera-retro {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  bottom: -18px;
+  left: 80px;
+  cursor: pointer;
+}
+.base-info{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.update-profile{
+  padding: 50px;
+}
+.icons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 8%;
+}
+
+.icons .fa-facebook-f {
+  color: #056FEC;
+
+}
+
+.icons .fa-twitter {
+  color: #72CCFF;
+
+}
+
+.icons .fa-instagram {
+
+  color: #E964FF;
+}
+.update-profile ul  {
+  margin-top: 40px;
+  margin-left: 0;
+  padding: 0 15px;
+}
+.update-profile ul li  {
+margin-top: 3px;
+}

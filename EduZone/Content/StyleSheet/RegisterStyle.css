@@ -1,0 +1,134 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Montserrat", sans-serif;
+  background-image: url(../Images/banner4-cssxk4.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+.container {
+  padding: 0 15px;
+  margin: 0 auto;
+}
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(52 129 64 / 60%);
+}
+.container form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 99vh;
+  width: 100%;
+  height: 100%;
+}
+.left {
+  position: relative;
+  z-index: 2;
+  background-color: #69b984;
+  border: none;
+  outline: none;
+  width: 600px;
+  height: 620px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  box-shadow: rgb(18 17 17) 3px 5px 8px;
+}
+.left .logo {
+  width: 100px;
+  margin-top: 40px;
+  margin-left: 50px;
+}
+.left h2 {
+  color: white;
+  font-size: 40px;
+  line-height: 1.5;
+  margin: 30px 50px;
+  font-weight: bold;
+}
+.left span {
+  font-size: 15px;
+  font-weight: lighter;
+  color: #fff;
+  padding-left: 50px;
+  display: block;
+  margin-bottom: 5px;
+  margin-top: -17px;
+}
+.left h1 {
+  font-size: 60px;
+  margin-left: 45px;
+  margin-top: -24px;
+  color: white;
+}
+.left .log {
+  width: 450px;
+  height: 275px;
+  margin-left: 30px;
+  margin-top: -22px;
+}
+.right {
+  position: relative;
+  z-index: 2;
+  background-color: #fff;
+  border: none;
+  outline: none;
+  width: 600px;
+  height: 620px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: rgb(18 17 17) 3px 5px 8px;
+}
+.right h2 {
+  font-weight: bold;
+  font-size: 40px;
+  margin: 10px 0;
+}
+.right input,
+.right select {
+  border: 1px solid #c9e5d7;
+  border-radius: 10px;
+  padding: 10px 15px;
+  width: 400px;
+  margin: 8px 0;
+  outline: none;
+}
+.right select {
+  color: #607a69;
+}
+a {
+  text-decoration: none;
+  color: #201d1d;
+}
+.right .forget {
+  position: relative;
+  top: -1px;
+  left: 128px;
+}
+.right .sign {
+  color: #69b984;
+}
+input:last-of-type {
+  width: 200px;
+  margin: 18px 0;
+  padding: 20px;
+  box-shadow: 4px 5px 20px #8f8b8b;
+  color: #fff;
+  outline: none;
+  border: 1px solid #69b984;
+  background-color: #69b984;
+  cursor: pointer;
+}

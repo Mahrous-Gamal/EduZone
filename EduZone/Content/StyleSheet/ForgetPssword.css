@@ -1,0 +1,26 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+    font-family: "Montserrat", sans-serif;
+    background-image: url(/Images/banner4-cssxk4.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    
+}
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(52 129 64 / 60%);
+}
+.btncolor {
+    text-decoration: none;
+    color: rgba(31, 74, 37, 0.6);
+}

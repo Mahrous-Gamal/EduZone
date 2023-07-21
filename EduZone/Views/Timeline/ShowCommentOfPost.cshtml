@@ -1,0 +1,175 @@
+﻿﻿@using EduZone.Models
+@using Microsoft.AspNet.Identity;
+@using System.Linq;
+@model Post
+@{
+    ViewBag.Title = "ShowCommentOfPost";
+    ApplicationDbContext context = new ApplicationDbContext();
+    string _id = Model.UserId;
+}
+@section Top_Link{
+    <link href="~/Content/StyleSheet/time-line-for-dector.css" rel="stylesheet" />
+}
+<input type="hidden"value="@User.Identity.GetUserId()" id="Useridx"/>
+<div class="timeline">
+    <div class="photo-name">
+        <img class="photo-profile" src="~/Images/@context.Users.Find(_id).Image" alt="photo" />
+        <div class="info">
+            <a data-user-id=@Model.UserId data-item-id=@Model.Id href="/Profile/ShowProfile/@_id"><h6 class="info-name">@context.Users.Find(_id).Name </h6></a>
+            <p class="info-date"> @Model.Date </p>
+        </div>
+    </div>
+    <div data-user-id=@Model.UserId data-item-id=@Model.Id class="p-2" id="PostText">
+        @Html.Raw(Model.ContentOfPost)
+    </div>
+    @if (Model.ImageUrl != "" && Model.ImageUrl != null)
+    {
+        <div class="w-100 ">
+            <img src="/Images/@Model.ImageUrl" class="w-100 m-1" style="height:500px;" />
+        </div>
+    }
+    <div class="line"></div>
+    <div class="like-comment-p">
+        <div class="like-comment">
+            @if (context.Likes.ToList().FirstOrDefault(id => id.UserID == User.Identity.GetUserId() && id.PostId == Model.Id) != null)
+            {
+                <div style="cursor: pointer;">
+                    <a data-user-id="@User.Identity.GetUserId()" data-item-id="@Model.Id" onclick="funlikeTime('@User.Identity.GetUserId()', @Model.Id, true,false)">
+                        <i class="fa-solid fa-thumbs-up me-2 text-success chngcmnt"></i>
+                        <span class="text-secondary">Like</span>
+                    </a>
+                </div>
+
+            }
+            else
+            {
+                <div style="cursor: pointer;">
+                    <a data-user-id="@User.Identity.GetUserId()" data-item-id="@Model.Id" class="chngcmnt" onclick="funlikeTime('@User.Identity.GetUserId()', @Model.Id, false,false)">
+                        <i class="fa-solid fa-thumbs-up me-2 text-secondary chngcmnt"></i>
+                        <span class="text-secondary">Like</span>
+                    </a>
+                </div>
+            }
+            <div> <a href="@Url.Action("ShowCommentOfPost",new {Model.Id})" class="comment-btn"><i class="fa-solid fa-message me-2 text-secondary"></i> <span class="text-secondary">Comment</span> </a></div>
+        </div>
+        <div class="number-like-comment">
+            @{
+                int numcom = context.Comments.Where(s => s.PostID == Model.Id).Count();
+                int numLk = context.Likes.Where(p => p.PostId == Model.Id).Count();
+            }
+
+            <div data-user-id="@Model.Id"><b class="lik">@numLk</b><span class="ms-2 text-secondary likes-span">Like</span> </div>
+            <div data-user-id="@Model.Id"><b class="comnt">@numcom</b><span class="ms-2 text-secondary">Comment</span> </div>
+        </div>
+    </div>
+    <div class="input-group my-4 rounded-3">
+        <input type="text" id="inp" class="form-control" placeholder="COMMENT" value="">
+        <button class="btn btn-outline-success" type="button" onclick="funComment(@Model.Id)" id="button-addon2">comment</button>
+    </div>
+</div>
+<div class="comments_repos p-3 mb-5" style="width: 80%; margin: auto; ">
+    @if (context.Comments.FirstOrDefault(pi => pi.PostID == Model.Id) != null)
+    {
+
+        var cmnts = context.Comments.Where(id => id.PostID == Model.Id);
+        foreach (var comment in cmnts)
+        {
+            <div id="@comment.Id" class="comment row " style="padding: 10px; margin: 2px 2px; ">
+                <div class="d-flex">
+                    <div class="comment_info col-sm-10 d-flex flex-row ">
+                        <div class="avatar me-1">
+                            <img src="~/Images/@context.Users.FirstOrDefault(i => i.Id == @comment.UserId).Image" class="comment-avatar" alt="">
+                        </div>
+                        <a href="@Url.Action("Educator_profile", "Profile",new { id=comment.UserId})" class="username mt-2"><p>@context.Users.FirstOrDefault(i => i.Id == @comment.UserId).Name</p></a>
+                    </div>
+                    <div>
+                        @if (comment.UserId == User.Identity.GetUserId())
+                        {
+                        <i class="fa-solid fa-delete-left" style="color: #ff0000;" cursor: pointer;" onclick="DeleteCom(@comment.Id )"></i>
+                        }
+                    </div>
+                </div>
+                <p class="comment_content col-10 ms-5">@comment.ContentOfComment </p>
+            </div>
+        }
+    }
+</div>
+
+@section bottom_Link
+{
+    <script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
+    <script src="~/Signalr/hubs"></script>
+    <script>
+            let proxy;
+            $(function () {
+                var con = $.hubConnection();
+                proxy = con.createHubProxy("HubClass");
+                con.start();
+                proxy.on("NewCommentAdded", function (msg, usr, comid, numComents, image, postId, userid) {
+                    if (userid == document.getElementById("Useridx").value) {
+                        var con = `
+                        <div id='`+ comid + `' class="comment row " style="padding: 10px; margin: 2px 2px; ">
+                <div class="d-flex">
+                    <div class="comment_info col-sm-10 d-flex flex-row ">
+                        <div class="avatar me-1">
+                            <img src="/Images/`+ image + `" class="comment-avatar" alt="">
+                        </div>
+                        <a href="/Profile/Educator_profile/${userid}" class="username mt-2"><p>` + usr + `</p></a>
+                    </div>
+                    <div>
+                        <i class="fa-solid fa-delete-left" style="color: #ff0000;" onclick="DeleteCom(`+ comid + `)"></i>
+                    </div>
+                </div>
+                <p class="comment_content col-10 ms-5">`+ msg + `</p>
+            </div>
+                             `
+                        $('.comments_repos').prepend(con);
+                        $("div[data-user-id='" + @Model.Id + "']").find(".comnt").text(numComents);
+                    }
+                    else {
+                        var con = `
+                        <div id='`+ comid +`' class="comment row " style="padding: 10px; margin: 2px 2px; ">
+                <div class="d-flex">
+                    <div class="comment_info col-sm-10 d-flex flex-row ">
+                        <div class="avatar me-1">
+                            <img src="/Images/`+image+`" class="comment-avatar" alt="">
+                        </div>
+                        <a href="/Profile/Educator_profile/${userid}" class="username mt-2"><p>`+ usr +`</p></a>
+                    </div>
+                    <div>
+                    </div>
+                </div>
+                <p class="comment_content col-10 ms-5">`+msg+`</p>
+            </div>
+                             `
+                    $('.comments_repos').prepend(con);
+                    $("div[data-user-id='" + @Model.Id + "']").find(".comnt").text(numComents);
+                    }
+                });
+                proxy.on("NewLikeAddedInTimeLine", function (uid, pid, clr, numLik) {
+                    var newIcon = $("<i>").addClass("fa-solid fa-thumbs-up").addClass("text-" + clr);
+                    $("a[data-user-id='" + uid + "'][data-item-id='" + pid + "']").find(".chngcmnt").empty().append(newIcon).append("<span class='ms-2  text-secondary'> Like </span>");
+                    $("div[data-user-id='" + pid + "']").find(".lik").text(numLik);
+                });
+                proxy.on("NewCommentDeleted", function (id, num) {
+                    var sid = id.toString();
+                    var div = document.getElementById(sid);
+                    console.log(div);
+                    div.remove();
+                    $(".comnt").text(num);
+                });
+            });
+        function funComment(PostID) {
+            var msg = document.getElementById('inp').value;
+            document.getElementById('inp').value = '';
+            proxy.invoke("AddComment", PostID, msg,'@User.Identity.GetUserId()');
+        };
+        function funlikeTime(uid, pid, flag, realLike) {
+            proxy.invoke("AddlikeInTimeLine", uid, pid, flag, realLike);
+        };
+        function DeleteCom(idval) {
+            proxy.invoke("DeleteComment",idval)
+        }
+
+    </script>
+}

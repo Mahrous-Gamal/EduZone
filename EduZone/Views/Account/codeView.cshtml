@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "codeView";
+    Layout = null;
+}
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<style>
+    body {
+        font-family: "Montserrat", sans-serif;
+        background-image: url(/Images/banner4-cssxk4.jpg);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+    }
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(52 129 64 / 60%);
+    }
+    
+</style>
+<div class="overlay">
+    <div class="card text-center w-50 align-content-center " style=" font-family: 'Signika', sans-serif;margin-top:25vh;margin-left:25%">
+        <div class="card-header h5 text-white " style="background-color: rgb(52 129 64 / 60%);">Enter verification code</div>
+        @using (Html.BeginForm("ConfirmEmail", "Account", FormMethod.Post))
+        {
+            @Html.ValidationSummary(false, "", new { @class = "text-danger ms-5 mt-2 text-start" })
+            <div class="form-floating mb-2">
+                <input type="text" class="form-control w-75 mt-2" style="margin-left:80px;" name="code" id="floatingInput" placeholder="Enter code">
+                <label style="margin-left:80px;" for="floatingInput">Add Code Here</label>
+            </div>
+            <input type="submit" value="submit" class="btn w-75 p-2 m-3" style="background-color: rgb(52 129 64 / 60%);">
+        }
+    </div>
+
+</div>
+
+
+<script src="~/Scripts/bootstrap.js"></script>
+<script src="~/Scripts/bootstrap.bundle.js"></script>
+
+

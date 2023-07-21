@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNet.Identity;
+@using EduZone.Models;
+@model List<GroupsMembers>
+@{
+    ViewBag.Title = "Group_Member";
+}
+@Html.Partial("_GroupPartialView")
+
+<div class="tab-content p-3 my-3">
+    <div class="tab-pane active" id="Members">
+        <div class="input-group my-4 rounded-3">
+            <input type="text" class="form-control" placeholder="search by name">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2">search</button>
+        </div>
+        <div class="d-flex flex-row flex-wrap">
+            @foreach (var item in Model)
+            {
+
+                if (item.MemberId != User.Identity.GetUserId() )
+                {
+                    ApplicationDbContext context = new ApplicationDbContext();
+                    ApplicationUser user = context.Users.FirstOrDefault(c => c.Id == item.MemberId);
+                    var currentUser = User.Identity.GetUserId();
+                    if (user != null)
+                    {
+                    <div class="card m-3 ">
+                        <a href="/Profile/Educator_profile/@user.Id">
+                            <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center">
+                                <img src="~/Images/@user.Image" width="150px" height="150px" class="photo-profile" alt="...">
+                                    <h6 class="card-title my-2">
+                                        <a href="/Profile/ShowProfile/@user.Id"><span class="badge rounded-pill text-bg-info">@user.Name</span></a>
+                                    </h6>
+                            </div>
+                        </a>
+                        @if (ViewBag.GCR7 == currentUser || User.IsInRole("Admin"))
+                        {
+                            <div class="card-footer d-flex justify-content-center">
+                                <a href="/Group/Delete_Member/@user.Id" class="btn btn-sm btn-outline-danger w-100"> Remove </a>
+                            </div>
+                        }
+                    </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+</div>

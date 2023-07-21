@@ -1,0 +1,103 @@
+﻿﻿@using Microsoft.AspNet.Identity.EntityFramework
+@model List<IdentityRole>
+@{
+    ViewBag.Title = "NewRole";
+    int cont = 1;
+    string action = "/role/NewRole";
+    string method = "post";
+    string valueOfbtn = "Add";
+}
+
+@if (ViewBag.curd == "update")
+{
+    action = "/role/update";
+    method = "Post";
+    valueOfbtn = "Update";
+}
+else if (ViewBag.curd == "delete")
+{
+    action = "/role/delete";
+    method = "Post";
+    valueOfbtn = "Delete";
+}
+
+<div class="cont d-flex rounded-2 mt-3" id="blur">
+    <div class="border shadow  rounded-3 p-2" style="width: 40%">
+        <form action="@action" method="@method">
+            <h1 style="text-align:center">Role</h1>
+
+            <label class="form-label fw-semibold mt-2">Role Name</label>
+            @if (ViewBag.rolename != null)
+            {
+                <input class="form-control" type="text" name="rolename" value="@ViewBag.rolename.Name">
+                @Html.Hidden("roleid", new { ViewBag.rolename.Id })
+            }
+            else
+            {
+                <input class="form-control" type="text" name="rolename" value="">
+            }
+
+            <input type="submit" value="@valueOfbtn" class="btn btn-success mt-2" style="width:100%;">
+
+        </form>
+    </div>
+    <div class="w-50" style="margin-left:30px;">
+        <table class="table shadow table-hover table-responsive table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Role Name</th>
+                    <th scope="col">More</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row">@cont</th>
+                        <td>@item.Name</td>
+                        <td>
+
+                            <a href="@Url.Action("Update","role",new { roleid=item.Id })" class="btn btn-outline-success">Update</a>
+                            @* <a href="@Url.Action("delete","role",new { roleid=item.Id })" class="btn btn-danger" onclick="confirmDelete()">Delete</a>*@
+                            @* @Html.ActionLink("Delete", "delete", new { roleid = item.Id }, new { onclick = "return confirm('Are sure wants to delete?');", @class = "btn btn-danger" })*@
+                            <a href="#" class="btn btn-outline-danger " onclick="toggle('@item.Id')" style="">Delete</a>
+
+                        </td>
+                    </tr>
+                    cont++;
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Top_Link{
+    <link href="~/Content/StyleSheet/addCourses.css" rel="stylesheet"   />
+}
+
+@section bottom_Link{
+    @*<script src="~/Scripts/jquery-3.6.4.js"></script>*@
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script>
+    var btn = document.getElementById("BtnYes");
+        // toggle blur and popup
+        function toggle(val) {
+            btn.href = '/Role/DeleteRole/' + val;
+            let blur = document.getElementById("blur");
+            blur.classList.toggle("active");
+
+            let popup = document.getElementById("popup");
+            popup.classList.toggle("active");
+        }
+    </script>
+}
+<div id="popup">
+    <h3>Do You Want Delete This Course ?</h3>
+    <a href="" id="BtnYes" class="btn btn-danger delete">Yes</a>
+    <a href="#" class="btn btn-success" onclick="toggle(0)">No</a>
+</div>  

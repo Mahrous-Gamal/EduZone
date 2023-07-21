@@ -1,0 +1,73 @@
+﻿@using EduZone.Models.ViewModels
+@model CollegeInfo
+@{
+    ViewBag.Title = "CollegeInfo";
+}
+
+
+
+
+<div class="tab-pane fade show active">
+    @using (Html.BeginForm())
+    {
+        <h3 >Educational information</h3>
+        <hr class="mb-5"/>
+        @Html.AntiForgeryToken()
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>College ID</label>
+            <input type="text" class="form-control" required value="@Model.CollegeID" name="CollegeID">
+            @Html.ValidationMessageFor(m => m.CollegeID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Batch</label>
+            <input type="text" class="form-control" required value="@Model.Batch" name="Batch">
+            @Html.ValidationMessageFor(m => m.Batch, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Group Number</label>
+            <input type="text" class="form-control" required value="@Model.GroupNo" name="GroupNo">
+            @Html.ValidationMessageFor(m => m.GroupNo, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Department</label>
+            <input type="text" class="form-control" required value="@Model.Department" name="Department">
+            @Html.ValidationMessageFor(m => m.Department, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Section</label>
+            <input type="text" class="form-control" required value="@Model.Section" name="Section">
+            @Html.ValidationMessageFor(m => m.Section, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>GPA</label>
+            <input type="text" class="form-control" required value="@Model.GPA" name="GPA">
+            @Html.ValidationMessageFor(m => m.GPA, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+        <div>
+            <input class="btn btn-primary" type="submit" value="Update">
+        </div>
+
+    }
+</div>
+
+@section bottom_Link{
+    <script>
+        var item = document.getElementsByClassName("item2");
+        console.log(item[0]);
+        item[0].classList.add("active");
+    </script>
+}

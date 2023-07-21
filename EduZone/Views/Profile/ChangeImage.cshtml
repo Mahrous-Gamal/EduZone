@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "ChangeImage";
+}
+
+
+<div class="tab-pane fade show active" id="ChangeProfileImg" role="tabpanel" aria-labelledby="ChangeProfileImg1">
+    @using (Html.BeginForm("ChangeImage", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <h2>Chanage Image</h2>
+        <hr />
+        @Html.AntiForgeryToken();
+        <input class="form-control mt-auto" type="file" name="ChangeImg" required />
+        <div class="mt-3 text-center">
+            <input type="submit" value="Save Changes" class="btn btn-primary" />
+        </div>
+    }
+</div>
+@section bottom_Link{
+    <script>
+        var item = document.getElementsByClassName("item3");
+        console.log(item[0]);
+        item[0].classList.add("active");
+    </script>
+}

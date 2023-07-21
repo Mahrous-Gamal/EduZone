@@ -1,0 +1,377 @@
+﻿@using System.Security.Claims;
+@using EduZone.Models;
+@using Microsoft.AspNet.Identity;
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduZone</title>
+    <link rel="icon" href="~/Content/Images/logo.png">
+    <!-- Fonts Awesome-->
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    <!-- Bootstrap -->
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <!-- CSS dependences -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <!-- End -->
+    <!-- CSS Main File -->
+    <link href="~/Content/StyleSheet/style.css" rel="stylesheet" />
+    <link href="~/Content/StyleSheet/sidebar.css" rel="stylesheet" />
+    <link href="~/Content/StyleSheet/ProfileCSS.css" rel="stylesheet" />
+    @RenderSection("Top_Link", false);
+</head>
+
+<body>
+    @{
+        string path = "";
+        if (User.Identity.IsAuthenticated)
+        {
+
+            ApplicationDbContext context = new ApplicationDbContext();
+
+            string id = "";
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            if (claimsIdentity != null)
+            {
+                var userIdClaim = claimsIdentity.Claims
+                    .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+                if (userIdClaim != null)
+                {
+                    id = userIdClaim.Value;
+                }
+            }
+            var user1 = context.Users.FirstOrDefault(e => e.Id == id);
+
+            if (user1 == null || user1.Image == null)
+            {
+                path = "malefemale.jpg";
+            }
+            else
+            {
+                path = user1.Image;
+            }
+
+
+        }
+
+        <!-- Sidebar Section -->
+        <div class="sidebar closee">
+            <!-- logo -->
+            <div class="logo-details">
+                <i class='bx bxs-graduation'></i>
+                <span class="logo_name">EduZone</span>
+            </div>
+            <!-- logo -->
+            <!-- Sidebar nav links -->
+            <ul class="nav-links">
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <li>
+                        <a href="/Admin/Index">
+                            <i class='bx bx-home'></i>
+                            <span class="link_name">Dashboard</span>
+                        </a>
+                        <ul class="sub-menu blank">
+                            <li><a class="link_name" href="/Admin/dashboard">Dashboard</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/Admin/AddEducatorMail">
+                            <i class="bx bx-group"></i>
+                            <span class="link_name">Educator</span>
+                        </a>
+                        <ul class="sub-menu blank">
+                            <li><a class="link_name" href="/Admin/AddEducatorMail">Educator</a></li>
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    if (User.IsInRole("Educator"))
+                    {
+                        <li>
+                            <a href="/Educator/dashboard">
+                                <i class='bx bx-home'></i>
+                                <span class="link_name">Timeline</span>
+                            </a>
+                            <ul class="sub-menu blank">
+                                <li><a class="link_name" href="/Educator/dashboard">Timeline</a></li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a href="/Student/dashboard">
+                                <i class='bx bx-home'></i>
+                                <span class="link_name">Timeline</span>
+                            </a>
+                            <ul class="sub-menu blank">
+                                <li><a class="link_name" href="/Student/dashboard">Timeline</a></li>
+                            </ul>
+                        </li>
+                    }
+                    <li>
+                        <a href="/Timeline/TimeLine">
+                            <i class='bx bxl-vk'></i>
+                            <span class="link_name">Timeline</span>
+                        </a>
+                        <ul class="sub-menu blank">
+                            <li><a class="link_name" href="/Timeline/TimeLine">Timeline</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/Group/Index">
+                            <i class="bx bx-group"></i>
+                            <span class="link_name">Groups</span>
+                        </a>
+                        <ul class="sub-menu blank">
+                            <li><a class="link_name" href="/Group/Index">Groups</a></li>
+                        </ul>
+                    </li>
+                }
+                <li>
+                    <a href="/Chat/Chat_with_one">
+                        <i class='bx bxs-chat'></i>
+                        <span class="link_name">Chat</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a class="link_name" href="/Chat/Chat_with_one/@User.Identity.GetUserId()">Chat</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="iocn-link">
+                        <a href="#">
+                            <i class="bx bx-collection"></i>
+                            <span class="link_name">Academic</span>
+                        </a>
+                        <i class="bx bxs-chevron-down arrow"></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name" href="#">Academic</a></li>
+                        <li><a href="/Student/GetBatches">Batches</a></li>
+                        @if (User.IsInRole("Student"))
+                        {
+                            <li><a href="/Student/Pre_Registration">Courses Enrollment</a></li>
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li><a href="/Course/index">Courses</a></li>
+                            <li><a href="/Department/index">Departments</a></li>
+                        }
+                    </ul>
+                </li>
+                @if (!User.IsInRole("Admin"))
+                {
+                    if (User.IsInRole("Student"))
+                    {
+                        <li>
+                            <div class="iocn-link">
+                                <a href="/Student/Exam">
+                                    <i class="bx bx-check-square"></i>
+                                    <span class="link_name">Exam</span>
+                                </a>
+                                <i class="bx bxs-chevron-down arrow"></i>
+                            </div>
+                            <ul class="sub-menu">
+                                <li><a class="link_name" href="/Student/Exam">Exam</a></li>
+                                <li><a href="/Student/Exam">Exams</a></li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <div class="iocn-link">
+                                <a href="/Educator/Index">
+                                    <i class="bx bx-check-square"></i>
+                                    <span class="link_name">Exam</span>
+                                </a>
+                                <i class="bx bxs-chevron-down arrow"></i>
+                            </div>
+                            <ul class="sub-menu">
+                                <li><a class="link_name" href="/Educator/Index">Exam</a></li>
+                                <li><a href="/Educator/Index">Exams</a></li>
+                                <li><a href="/Educator/CreateExam">Create</a></li>
+                            </ul>
+                        </li>
+                    }
+                }
+                else
+                {
+                    <li>
+                        <div class="iocn-link">
+                            <a href="">
+                                <i class="fa-solid fa-users-gear me-4 ms-4" style="color: #eaeef5;"></i>
+                                <span class="link_name">Manage Users</span>
+                            </a>
+                            <i class="bx bxs-chevron-down arrow"></i>
+                        </div>
+                        <ul class="sub-menu">
+                            <li><a class="link_name" href="">Manage Users</a></li>
+                            <li><a href="/Admin/ManageUserStudent">Students</a></li>
+                            <li><a href="/Admin/ManageUserDoctor">Doctors</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/Role/NewRole">
+                            <i class="bx bx-calendar-check"></i>
+                            <span class="link_name">Roles</span>
+                        </a>
+                        <ul class="sub-menu blank">
+                            <li><a class="link_name" href="#">Roles</a></li>
+                        </ul>
+                    </li>
+                }
+                @*<li>
+                        <a href="#">
+                            <i class="bx bx-calendar-check"></i>
+                            <span class="link_name">Attendance</span>
+                        </a>
+                        <ul class="sub-menu blank">
+                            <li><a class="link_name" href="#">Attendance</a></li>
+                        </ul>
+                    </li>*@
+                <li>
+                    <a href="/student/Notification">
+                        <i class="bx bx-bell"></i>
+                        <span class="link_name">Notifications</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a class="link_name" href="/student/Notification">Notifications</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="/Account/LogOff">
+                        <i class='bx bx-log-out'></i>
+                        <span class="link_name">Logout</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a class="link_name" href="/Account/LogOff">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- Sidebar nav links -->
+        </div>
+        <!-- End -->
+        <!-- Home section (Navbar + Content Section) -->
+        <section class="home-section">
+            <!-- Navbar Section -->
+            <div class="home-header position-sticky sticky-top p-2 d-sm-flex justify-content-sm-between align-items-sm-center bg-light">
+                <div class="my-1">
+                    <i class="bx bx-menu"></i>
+                </div>
+                <div class="d-flex justify-content-evenly align-items-center flex-grow-1">
+                    <div class="navbar-items"><a href="#">Home</a></div>
+                    <div class="navbar-items"><a href="#">Events</a></div>
+                    <div class="navbar-items"><a href="#">About us</a></div>
+                    <div class="navbar-items"><a href="#">Contact us</a></div>
+                </div>
+                <div class="profile ">
+                    <a href="/Profile/BasicInfo" class="d-flex align-items-center">
+                        <span class="mt-lg-2 me-2" style="color:#69B986">
+                            @if (Request.IsAuthenticated)
+                            {
+                                <h6>@User.Identity.Name.Split('.', '@')[0]</h6>
+                            }
+                        </span>
+                        <div class="rounded-circle border d-flex justify-content-center align-items-center" style="width:45px;height:45px" alt="Avatar">
+                            <img src="~/Images/@path" alt="">
+                        </div>
+
+                    </a>
+                </div>
+
+            </div>
+            <!-- End -->
+            <!-- Render Section (: -->
+            <main class="container my-3">
+                <section class="py-5 my-5">
+                    <div class="container">
+                        <div class="bg-white shadow rounded-lg d-block d-sm-flex">
+                            <div class="profile-tab-nav border-right">
+                                <div class="p-4">
+
+                                    <div class="img-circle text-center mb-3">
+
+                                        <img src="~/images/@path" alt="Image" class="shadow">
+                                    </div>
+                                    @*<h4 class="text-center">@Model.FirstName  @Model.LastName</h4>*@
+                                </div>
+                                <div class="nav flex-column nav-pills" id="v-pills-tab">
+                                    <a class="nav-link  item1" href="/Profile/BasicInfo">
+                                        <i class="fa fa-home text-center mr-1"></i>
+                                        Account
+                                    </a>
+                                    @if (User.IsInRole("Student"))
+                                    {
+                                        <a class="nav-link item2" href="/Profile/CollegeInfo">
+                                            <i class="fa-solid fa-address-card"></i>
+                                            Educational information
+                                        </a>
+                                    }
+                                    else if (User.IsInRole("Educator"))
+                                    {
+                                        <a class="nav-link item6" href="/Profile/EducatorInfo">
+                                            <i class="fa-solid fa-address-card"></i>
+                                            Educator information
+                                        </a>
+                                    }
+                                    <a class="nav-link item5" href="/Profile/ChanageEmail">
+                                        <i class="fa-solid fa-at"></i>
+                                        Chanage Email
+                                    </a>
+                                    <a class="nav-link item3" href="/Profile/ChangeImage">
+                                        <i class="fa-solid fa-user"></i>
+                                        Chanage photo
+                                    </a>
+                                    <a class="nav-link item4" href="/Profile/ChangePassword">
+                                        <i class="fa fa-key text-center mr-1"></i>
+                                        Password
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="tab-content p-4 p-md-5" id="v-pills-tabContent">
+                                <!--Here ================-->
+                                @if (ViewBag.Show == true)
+                                {
+
+                                    <div class="alert alert-success alert-dismissible" role="alert">
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        Update successful
+                                    </div>
+                                    ViewBag.Show = false;
+                                }
+
+                                @RenderBody()
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+            </main>
+            <!-- End Section -->
+        </section>
+        <!-- End -->
+        <!-- JS dependences -->
+        <script src="~/Scripts/jquery-3.6.4.js"></script>
+        <script src="~/Scripts/jquery.validate.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+        <script src="~/Scripts/bootstrap.js"></script>
+
+        <script src="~/lib/font-awesome/js/all.js"></script>
+        <script src="~/Scripts/bootstrap.bundle.js"></script>
+        <script src="~/Scripts/main.js"></script>
+        <!-- End -->
+        @RenderSection("bottom_Link", false)
+    }
+</body>
+
+</html>

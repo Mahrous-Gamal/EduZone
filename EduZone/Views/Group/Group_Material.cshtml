@@ -1,0 +1,63 @@
+﻿@using EduZone.Models
+@model List<GroupMaterial>
+@{
+    ViewBag.Title = "Group_Material";
+}
+@Html.Partial("_GroupPartialView")
+
+<div class="tab-content p-3 my-3">
+    <div class="tab-pane active" id="Materials">
+        <form action="@Url.Action("SaveMaterial", "Group", new { GCode = ViewBag.GC })"  id = "fileupload"  method="post" enctype="multipart/form-data">
+            <div class="input-group mb-3 col-10">
+
+                <input type="file" class="form-control w-100" name="file" required  multiple = "multiple">
+                <input type="submit" class="btn btn-sm btn-outline-primary col-2 mt-1" value="Upload">
+
+            </div>
+        </form>
+        <table class="table table-light border border-2 border-dark table-striped mt-3">
+            <thead>
+                <tr class="table-dark">
+                    <td scope="col">#</td>
+                    <td scope="col">Name</td>
+                    <td scope="col">Size</td>
+                    <td scope="col">Type</td>
+                    <td scope="col">Operations</td>
+                </tr>
+            </thead>
+            <tbody>
+
+                @{ int cnt = 1;
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row">@cnt</th>
+                            <td>@item.Name</td>
+                            <td>@item.Size</td>
+                            <td>@item.Type</td>
+                            <td>
+                                <a href="@Url.Action("DownloadMaterial", "Group", new { GCode = ViewBag.GC, id = item.ID })"> <i class="fa-solid fa-download mx-3 text-primary"></i> </a>
+                                <a href="@Url.Action("DeleteMaterial", "Group", new { GCode = ViewBag.GC, id = item.ID })"> <i class="fa-solid fa-trash-can text-danger"></i></a>
+                            </td>
+                        </tr>
+                        cnt++;
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#fileupload').fileupload({
+            dataType: 'json',
+            done: function (e, data) {
+                // Handle the response from the server
+            },
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                // Update the progress bar
+            }
+        });
+    });
+</script>

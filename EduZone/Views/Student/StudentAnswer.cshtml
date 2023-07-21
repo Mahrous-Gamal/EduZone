@@ -1,0 +1,114 @@
+﻿@using EduZone.Models.ViewModels
+@using EduZone.Models
+@model StudentAnswerDegreeViewModel
+@{
+    ViewBag.Title = "StudentAnswer";
+    Layout = null;
+    ApplicationDbContext context = new ApplicationDbContext();
+    var Eidx = Model.examDegree.ExamID;
+    var Exam = context.GetExams.FirstOrDefault(e => e.Id == Eidx);
+    var Cidx = Exam.CreatorID;
+
+}
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+ <link href="~/Content/StyleSheet/create-exam.css" rel="stylesheet" />
+<main class="container my-3 main-profile" style="background-color:#eee">
+    <div class='form-info'>
+        <h3 class="mb-3"> Exam Details </h3>
+        <div class="p-2">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <h4>Exam Title : <span class="badge text-bg-light">@Exam.FormTitle</span> </h4>
+                </li>
+                <li class="list-group-item">
+                    <h4>Doctor : <span class="badge text-bg-light">@context.Users.FirstOrDefault(e => e.Id == Cidx).Name</span> </h4>
+                </li>
+                <li class="list-group-item">
+                    <h4>Group Name : <span class="badge text-bg-light">@Exam.GroupName</span> </h4>
+                </li>
+                <li class="list-group-item">
+                    <h4>Time : <span class="badge text-bg-light">  2 hours</span></h4>
+                </li>
+                <li class="list-group-item">
+                    <h4>Student Name : <span class="badge text-bg-light">@Model.examDegree.StudentName</span></h4>
+                </li>
+                <li class="list-group-item">
+                    <h4> Sitting Number : <span class="badge text-bg-light"> @Model.examDegree.Sitting_Number </span></h4>
+                </li>
+                <li class="list-group-item">
+                    <h4> Total Degree : <span class="badge text-bg-light"> @Model.examDegree.Degree </span></h4>
+                </li>
+            </ul>
+        </div>
+        <!-- All-Q  -->
+        <hr />
+        <div class='questions container' id='questions_id'>
+            <h3 class="my-5">  Questions (@Model.studentAnswers.Count()) </h3>
+            <!-- q-n-  -->
+            @for (int i = 0; i < Model.studentAnswers.Count(); i++)
+            {
+                var Qidx = Model.studentAnswers[i].QuestionID;
+                var Quest = context.GetQuestions.FirstOrDefault(e => e.Id == Qidx);
+                string Q = $"Q{i}";
+                <div class='question row'>
+                    <div class="col-11">
+                        <!-- Q-H -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-text">
+                                <label class='m-0 question_number'> @Q   </label>
+                            </div>
+                            <textarea readonly class="form-control question_title" placeholder='Enter the question title...'>@Quest.QuestionText</textarea>
+                        </div>
+                        <!-- Q-H -->
+                        <!-- O-n-  -->
+                        <div class='m-3'>
+                            <div>
+                                @{
+                                    var QO = context.GetQuestionOptions.Where(e => e.QuestionId == Qidx).ToList();
+                                    for (int j = 0; j < QO.Count(); j++)
+                                    {
+                                        if (Quest.CorrectAnswer == j.ToString())
+                                        {
+                                            <div class="input-group mb-3 option">
+                                                <div class="input-group-text">
+                                                    <input class=" mt-0 p-0 " type="radio" checked disabled>
+                                                </div>
+                                                <input readonly class="form-control option_title" type="text" placeholder='Enter the option title...' value="@QO[j].OptionContent">
+                                            </div>
+                                        }
+                                        else if (Model.studentAnswers[i].Answer == j.ToString())
+                                        {
+                                            <div class="input-group mb-3 option">
+                                                <div class="input-group-text">
+                                                    <input class=" mt-0 p-0 bg-danger" type="radio" checked disabled>
+                                                </div>
+                                                <input readonly class="form-control option_title" type="text" placeholder='Enter the option title...' value="@QO[j].OptionContent">
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="input-group mb-3 option">
+                                                <div class="input-group-text">
+                                                    <input class=" mt-0 p-0 " type="radio" disabled>
+                                                </div>
+                                                <input readonly class="form-control option_title" type="text" placeholder='Enter the option title...' value="@QO[j].OptionContent">
+                                            </div>
+                                        }
+                                    }
+                                }
+                            </div>
+                            <div class="mx-3 d-inline">
+                                <span> @Model.studentAnswers[i].AnswerVale/@Quest.Point Points</span>
+                            </div>
+                        </div>
+                        <!-- O-n-  -->
+                    </div>
+                    <hr>
+                </div>
+            }
+            <!-- q-n-  -->
+        </div>
+        <!-- All-Q  -->
+
+    </div>
+</main>

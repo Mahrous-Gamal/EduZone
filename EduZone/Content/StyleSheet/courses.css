@@ -1,0 +1,136 @@
+body {
+  height: 99vh !important;
+}
+
+.cont {
+  padding: 20px 40px;
+  margin: 0 auto;
+}
+
+.cont header {
+  text-align: center;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.cont nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px;
+  margin: 20px 0;
+  border-bottom: 2px solid black;
+}
+
+.cont nav div {
+  border: 1px solid black;
+  width: 110px;
+  padding: 5px 0;
+  text-align: center;
+}
+
+.cont form {
+  /* background-color: #69b986; */
+  border: 1px solid black;
+  display: flex;
+  justify-content: start;
+  flex-wrap: wrap;
+  width: 90%;
+  margin: 0 auto;
+  border-radius: 6px;
+  position: relative;
+}
+
+.cont .inputbox {
+  width: calc(100% / 2 - 20px);
+  position: relative;
+  margin: 10px;
+}
+
+.cont .inputbox input {
+  position: relative;
+  width: 80%;
+  margin-top: 30px;
+  margin-left: 10px;
+  border: 1px solid black;
+  outline: none;
+  box-shadow: none;
+  color: black;
+  padding: 5px 10px;
+  border-radius: 7px;
+  font-size: 20px;
+  letter-spacing: 0.05em;
+  transition: 0.5s;
+}
+
+.cont .inputbox span {
+  position: absolute;
+  left: 0;
+  padding: 15px;
+  margin: 20px 0 10px 0;
+  font-size: 1em;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+  transition: 0.5s;
+  color: #595959f5;
+}
+
+.inputbox input:valid ~ span,
+.inputbox input:focus ~ span {
+  transform: translateX(-10px) translateY(-25px);
+  color: black;
+  font-size: 0.75em;
+  margin: 10px 0;
+}
+
+.inputbox input:focus {
+  box-shadow: inset 0px 0px 10px 1px #7bcf9a;
+}
+.cont form select {
+  width: 200px;
+  height: 30px;
+  text-align: center;
+  margin: 46px 0;
+  margin-right: 30px;
+}
+
+.cont form label:last-of-type {
+  position: relative;
+  top: 48px;
+  margin: 0 15px;
+}
+
+.cont form a {
+  height: 42px;
+  width: 50px;
+  text-align: center;
+}
+.cont form a i {
+   margin: 46px 0;
+   font-size: 30px;
+}
+
+.cont table {
+  background-color: rgb(231 231 231);
+  margin: 30px auto;
+  width: 80%;
+  border-radius: 7px;
+  padding: 10px;
+  border: 2px solid black;
+}
+
+.cont table td {
+  padding: 15px;
+  background-color: #eee;
+  border: 1px solid black;
+  text-align: center;
+}
+
+table th {
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+  border: 1px solid black;
+}

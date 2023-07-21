@@ -1,0 +1,339 @@
+﻿@using Microsoft.AspNet.Identity;
+@using EduZone.Models
+@model List<ChatIndividual>
+@{
+    ViewBag.Title = "Chat_with_one";
+}
+@section Top_Link{
+    <link href="~/Content/StyleSheet/chat2.css" rel="stylesheet" />
+    <link href="~/Content/StyleSheet/input.css" rel="stylesheet" />
+}
+
+<div class="card chat-app">
+    <div id="plist" class="people-list">
+
+        <div class="input-group mb-2">
+            <div class="input-group-text">
+                <i class="fa fa-search"></i>
+            </div>
+            <input type="text" onchange="search()" class="form-control" id="searchInput" name="search" placeholder="Search..." />
+        </div>
+
+        <ul class="list-unstyled chat-list mt-2 mb-0" id="otherusers">
+
+            @if (ViewBag.users != null)
+            {
+
+                foreach (var item in ViewBag.users)
+                {
+                    if (ViewBag.id == item.Id)
+                    {
+                        <li class="clearfix active">
+                            <a href="/chat/Chat_with_one/@item.Id">
+                                <div>
+                                    <img src="~/Images/@item.Image" alt="avatar" />
+                                    <div class="about">
+
+                                        <div class="name">@item.Name</div>
+                                        @if (item.OnLineOrNot != null)
+                                        {
+                                            if (item.OnLineOrNot == "Online")
+                                            {
+                                                <div class="status">
+                                                    <i class="fa fa-circle online" style="float:left"></i> @item.OnLineOrNot
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="status">
+                                                    <i class="fa fa-circle offline" style="float:left"></i> @item.OnLineOrNot
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="clearfix">
+                            <a href="/chat/Chat_with_one/@item.Id">
+                                <div>
+                                    <img src="~/Images/@item.Image" alt="avatar" />
+                                    <div class="about">
+
+                                        <div class="name">@item.Name</div>
+
+                                        @if (item.OnLineOrNot != null)
+                                        {
+                                            if (item.OnLineOrNot == "Online")
+                                            {
+                                                <div class="status">
+                                                    <i class="fa fa-circle online" style="float:left"></i> @item.OnLineOrNot
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="status">
+                                                    <i class="fa fa-circle offline" style="float:left"></i> @item.OnLineOrNot
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    }
+
+                }
+            }
+
+
+        </ul>
+    </div>
+    <div class="chat">
+        <div class="chat-header clearfix">
+            <div class="row">
+                <div class="col-lg-6">
+                    <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
+                        @if (@ViewBag.OtherUser.Image == null)
+                        {
+                            <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar" />
+                        }
+
+                        else
+                        {
+                            <img src="~/Images/@ViewBag.OtherUser.Image" alt="avatar" />
+                        }
+                    </a>
+                    <div class="chat-about">
+                        <h6 class="m-b-0">@ViewBag.OtherUser.Name</h6>
+                        @if (ViewBag.online != null)
+                        {
+                            if (ViewBag.online == "Online")
+                            {
+                                <small>@ViewBag.online</small>
+
+                            }
+                            else
+                            {
+                                <small>Last seen: @ViewBag.online</small>
+                            }
+                        }
+
+                    </div>
+                </div>
+                <div class="col-lg-6 hidden-sm text-end">
+                    <a href="javascript:void(0);" class="btn btn-outline-info">
+                        <i class="fa fa-cogs"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="chat-history">
+            @*<div class="message-previous previous">
+                    <a onclick="previous(this)" id="ankitjain28" name="20">
+                        Show Previous Message!
+                    </a>
+                </div>*@
+            <ul class="m-b-0" id="mess">
+                @if (Model != null)
+                {
+                    string userid = User.Identity.GetUserId();
+                    foreach (var item in Model)
+                    {
+                        if (item.SenderId == userid)
+                        {
+                            if (item.IsImage == true) { }
+                            else
+                            {
+                                <li class="clearfix">
+                                    <div class="message my-message">
+                                        @item.MessageContant
+                                        <span class="message-data-time">@item.Time</span>
+                                    </div>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            if (item.IsImage == true) { }
+                            else
+                            {
+                                <li class="clearfix">
+                                    <div class="message other-message float-end">
+                                        @item.MessageContant
+                                        <span class="message-data-time">@item.Time</span>
+                                    </div>
+                                </li>
+                            }
+                        }
+                    }
+                }
+
+
+
+            </ul>
+        </div>
+        <div class="chat-message row">
+            <div class="cont">
+                <div class="input">
+                    <input id="txtMesg" type="text" class="input" placeholder="What's on your mind?" />
+                </div>
+                <div class="icon">
+
+                    <i class="fa-regular fa-face-smile fa-lg me-2" style="color: gray; cursor: pointer;"></i>
+                    <i class="fa-regular fa-image fa-lg me-2" style="color: gray; cursor: pointer;"></i>
+                    <i class="fa-solid fa-paper-plane fa-lg " style="color:gray;cursor:pointer;" onclick="send()" id="sendButton"></i>
+                </div>
+            </div>
+            <!--<div class="input-group mb-0 col-8">
+            <div class="input-group-text">
+                <input type="button" value="Send" id="sendButton" onclick="send()">
+            </div>
+            <input type="text" class="form-control" id="txtMesg" placeholder="Enter text here..." />
+            <label for="file-input">
+                <a href="#" id="upload-img-btn" class="btn btn-outline-primary">
+                    <i class="fa fa-image"></i>
+                </a>
+            </label>-->
+            @*<input id="file-input" class="visually-hidden" type="file" accept="image/*" />*@
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section bottom_Link{
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.4.3.js"></script>
+    <script src="~/Signalr/hubs"></script>
+
+    <script>
+        console.log("script");
+        let prox = '';
+        $(function () {
+
+            console.log("functoin Onload");
+
+            var con = $.hubConnection();
+
+            prox = con.createHubProxy("ChatIndividualHub");
+
+            con.start();
+
+            prox.on("addUser", function (connectedid) {
+                var userid = '@User.Identity.GetUserId()';
+                prox.invoke("onlineUser", connectedid, userid,'@ViewBag.OtherUser.Id');
+            })
+
+            prox.on("deleteUser", function (connectedid) {
+                var userid = '@User.Identity.GetUserId()';
+                prox.invoke("deletOnlineUser", connectedid, userid,'@ViewBag.OtherUser.Id');
+            })
+
+            prox.on("otherUsers", function (id, image, name, time,online, x) {
+                if (id == null && image == null && name == null && time == null && x == 0) {
+                    const list = document.getElementById("otherusers");
+                    list.innerHTML = "";
+
+                }
+                else {
+                    if (x == 0) {
+                        const list = document.getElementById("otherusers");
+                        list.innerHTML = "";
+
+                    }
+
+                    var user = '';
+                    if (id == '@ViewBag.OtherUser.Id') {
+                        if (online == "Online") {
+                            user += ' <li class="clearfix active" onclick="/chat/Chat_with_one/' + id + '">';
+                            user += ' <a href="/chat/Chat_with_one/' + id + '">';
+                            user += ' <div><img src="/Images/' + image + '"alt="avatar" />';
+                            user += ' <div class="about"><div class="name">' + name + '</div>';
+                            user += '<div class="status"><i class="fa fa-circle online"></i>' + online;
+                            user += ' </div> </div> </div> </a>  </li>';
+                        }
+                        else {
+                            user += ' <li class="clearfix active" onclick="/chat/Chat_with_one/' + id + '">';
+                            user += ' <a href="/chat/Chat_with_one/' + id + '">';
+                            user += ' <div><img src="/Images/' + image + '"alt="avatar" />';
+                            user += ' <div class="about"><div class="name">' + name + '</div>';
+                            user += '<div class="status"><i class="fa fa-circle offline"></i>' + online;
+                            user += ' </div> </div> </div> </a>  </li>';
+                        }
+
+                    }
+                    else {
+                        if (online == "Online") {
+                            user += ' <li class="clearfix " onclick="/chat/Chat_with_one/' + id + '">';
+                            user += ' <a href="/chat/Chat_with_one/' + id + '">';
+                            user += ' <div><img src="/Images/' + image + '"alt="avatar" />';
+                            user += ' <div class="about"><div class="name">' + name + '</div>';
+                            user += '<div class="status"><i class="fa fa-circle online"></i>' + online;
+                            user += ' </div> </div> </div> </a>  </li>';
+                        }
+                        else {
+                            user += ' <li class="clearfix " onclick="/chat/Chat_with_one/' + id + '">';
+                            user += ' <a href="/chat/Chat_with_one/' + id + '">';
+                            user += ' <div><img src="/Images/' + image + '"alt="avatar" />';
+                            user += ' <div class="about"><div class="name">' + name + '</div>';
+                            user += '<div class="status"><i class="fa fa-circle offline"></i>' + online;
+                            user += ' </div> </div> </div> </a>  </li>';
+                        }
+                    }
+                    $("#otherusers").append(user);
+                }
+           })
+
+
+            prox.on("showMessage", function (id, time, message){
+                console.log("showMessage");
+                var userid ='@User.Identity.GetUserId()';
+                let myVar = '';
+                if (userid === id) {
+                    myVar += ' <li class="clearfix">';
+                    myVar += '<div class="message my-message">';
+                    myVar += message;
+                    myVar += ' <br /> <span class="message-data-time">' + time + 'Today</span>';
+                    myVar += ' </div></li>';
+                }
+                else {
+                    myVar += ' <li class="clearfix">';
+                    myVar += '<div class="message other-message float-end">';
+                    myVar += message;
+                    myVar += ' <br /> <span class="message-data-time">' + time + 'Today</span>';
+                    myVar += ' </div></li>';
+                }
+                $("#mess").append(myVar);
+            })
+        })
+
+        function send() {
+
+            console.log("beign send");
+            var userid = '@User.Identity.GetUserId()';
+            const message = document.getElementById("txtMesg").value;
+            prox.invoke("SendMessage", userid, message, '@ViewBag.OtherUser.Id');
+            document.getElementById("txtMesg").value = "";
+
+            console.log("end send");
+        }
+
+        //$('#searchInput').on('input', function () {
+        function search() {
+            console.log(document.getElementById("searchInput").value)
+            var query = document.getElementById("searchInput").value;
+            // Call the search method on the server
+            var userid = '@User.Identity.GetUserId()';
+            console.log(userid)
+            prox.invoke("search", query, userid);
+            console.log("end search");
+        }
+    </script>
+}

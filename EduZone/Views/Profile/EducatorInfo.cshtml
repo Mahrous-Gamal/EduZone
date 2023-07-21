@@ -1,0 +1,60 @@
+﻿@using EduZone.Models
+@model Educator
+@{
+    ViewBag.Title = "EducatorInfo";
+    var Edu = new Educator();
+    if (Model != null)
+    {
+        Edu = Model;
+    }
+}
+
+
+<div class="tab-pane fade show active">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+    <h3>Educator Information</h3>
+        <hr class="mb-4" />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Academic Degree</label>
+                    <input type="text" class="form-control" required value="@Edu.AcademicDegree" name="AcademicDegree">
+                    @Html.ValidationMessageFor(m => m.AcademicDegree, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Office</label>
+                    <input type="text" class="form-control" required value="@Edu.office" name="office">
+                    @Html.ValidationMessageFor(m => m.office, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Available</label>
+                    <input type="text" class="form-control" required value="@Edu.Available" name="Available">
+                    @Html.ValidationMessageFor(m => m.Available, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>CV</label>
+                    <input type="text" class="form-control" required value="@Edu.CVURL" name="CVURL">
+                    @Html.ValidationMessageFor(m => m.CVURL, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div>
+            <input class="btn btn-primary" type="submit" value="Update">
+        </div>
+
+    }
+</div>
+@section bottom_Link{
+    <script>
+        var item = document.getElementsByClassName("item6");
+        item[0].classList.add("active");
+    </script>
+}

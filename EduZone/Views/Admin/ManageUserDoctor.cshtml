@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "ManageUserDoctor";
+}
+@using EduZone.Models
+@model List<ApplicationUser>
+@{
+    ViewBag.Title = "GetBatches";
+    string vx;
+}
+
+
+<div class="d-flex flex-row flex-wrap">
+    <div class="input-group my-4 rounded-3">
+        <input type="text" class="form-control" placeholder="search by name">
+        <button class="btn btn-outline-secondary" type="button" id="button-addon2">search</button>
+    </div>
+    @if (Model.Count != 0)
+    {
+        foreach (var item in Model)
+        {
+            if (item == null)
+            {
+                continue;
+            }
+            <div class="card m-3 ">
+                <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center">
+                    <img src="~/Images/@item.Image" width="150px" height="150px" class="photo-profile" alt="...">
+                    <h6 class="card-title my-2">
+                        <a href="/Profile/ShowProfile/@item.Id"><span class="badge rounded-pill text-bg-info">@item.Name</span></a>
+                    </h6>
+                </div>
+                <div class="card-footer d-flex justify-content-center">
+                    <a href="/Profile/ShowProfile/@item.Id" class="btn btn-sm btn-outline-primary w-100 me-1"> Details </a>
+
+                    <a href="/Admin/DeleteUser/@item.Id" class="btn btn-sm btn-outline-danger w-100"> Delete </a>
+                </div>
+            </div>
+        }
+    }
+</div>

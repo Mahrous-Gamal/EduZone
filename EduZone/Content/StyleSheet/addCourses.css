@@ -1,0 +1,75 @@
+.cont {
+}
+
+    .cont#blur.active {
+        filter: blur(25px);
+        pointer-events: none;
+        user-select: none;
+    }
+
+#popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    padding: 50px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.5s;
+}
+
+    #popup.active {
+        visibility: visible;
+        opacity: 1;
+        transition: 0.5s;
+    }
+
+    #popup h3 {
+        margin: 20px;
+    }
+
+    #popup a {
+        margin: 0 70px;
+        margin-top: 20px;
+        width: 100px;
+    }
+
+#popup1 {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    padding: 50px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.5s;
+}
+
+    #popup1.active {
+        visibility: visible;
+        opacity: 1;
+        transition: 0.5s;
+    }
+
+    #popup1 h3 {
+        margin: 20px;
+    }
+
+    #popup1 a {
+        margin: 0 70px;
+        margin-top: 20px;
+        width: 100px;
+    }
+.right {
+    width: 65%;
+    margin: 35px auto;
+    border-radius: 15px;
+}
+
+.hide {
+    display: none;
+}

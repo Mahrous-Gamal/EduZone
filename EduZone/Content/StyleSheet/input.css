@@ -1,0 +1,24 @@
+.cont {
+    position: relative;
+    width: 100%;
+    text-align: center;
+}
+
+    .cont .input input {
+        padding: 15px 10px;
+        width: 100%;
+        overflow-y: scroll;
+        outline: none;
+        border: none;
+        background-color: #eee;
+        border-radius: 8px;
+    }
+
+.icon {
+    position: absolute;
+    background-color: #eee;
+    height: 54px;
+    top: 0;
+    padding: 15px;
+    right: 0;
+}

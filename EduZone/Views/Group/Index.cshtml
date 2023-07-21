@@ -1,0 +1,144 @@
+﻿@using EduZone.Models
+@model List<Group>
+@{
+    ViewBag.Title = "Index";
+}
+<link href="~/Content/StyleSheet/new-group.css" rel="stylesheet" />
+<div class=" d-flex justify-content-between align-items-center bg-light p-3 mb-4">
+    <h5>Groups</h5>
+    <div>
+        @if (User.IsInRole("Educator"))
+        {<button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <i class="fa-solid fa-folder-plus fa-beat-fade"></i> Create
+            </button>
+
+        }
+    <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+        <i class="fa-solid fa-calendar-plus fa-beat-fade"></i> Join
+    </button>
+       
+    </div>
+</div>
+
+
+<div class="modal modal-xl fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Group Form</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="overlay"></div>
+                <form action="@Url.Action("Index", "Group", new { GCode = ViewBag.GC })" method="post" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <div class="new-group">
+                        <h2 class="new-group-titel">New Group</h2>
+                        <input type="text" class="form-control" id="exampleInputEmail1" name="GroupName" aria-describedby="emailHelp" placeholder="Group Name" required>
+                        <input type="text" class="form-control" id="exampleInputEmail1" name="Description" aria-describedby="emailHelp" placeholder="Description" required>
+                        <div class="d-flex mt-4" style="margin-left:100px">
+                            <label class="me-2">Group Image </label>
+                            <input type="file" name="file"  class="border-0 m-0 p-0" />
+                        </div>
+                        <input type="submit" value="Create" class="btn btn-lg btn-success" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-xl fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Group Form</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="overlay"></div>
+                @using (Html.BeginForm("JoinGroup", "Group", FormMethod.Post))
+                {
+
+                    @Html.AntiForgeryToken()
+            <div class="new-group">
+                <h2 class="new-group-titel">Join Group</h2>
+                <input type="text" class="form-control" placeholder="Enter Group Code" required name="CodeOfGroup">
+                <input type="submit" value="Join" class="btn btn-lg btn-success" />
+            </div>
+                }
+                </div>
+        </div>
+    </div>
+</div>
+<div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 container ms-5">
+    @foreach (var item in Model)
+    {
+        <div class="col mb-3 ">
+            <div class="card h-100">
+                <img src="~/Images/@item.image" class="card-img-top" alt="group-img" height="200px">
+                <div class="card-body">
+                    <h5 class="card-title">@item.GroupName</h5>
+                    <p class="card-text small">
+                        Code : <span class="badge text-bg-info">@item.Code</span>
+                    </p>
+                    <p class="card-text small text-secondary">
+                        @item.Description
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <a href="@Url.Action("Group_Post", "Group", new { GroupCode = @item.Code })" class="btn btn-sm btn-outline-success w-100"> Open </a>
+                </div>
+            </div>
+        </div>
+        
+    }
+</div>
+
+<div class="bg-light card w-50 h-25 fixed-bottom border-5 shadow-lg border-opacity-75 border-dark rounded-2" id="add_group1"
+     style="margin-bottom: 20%;margin-left: 25%; display:none">
+    <div class="ms-5 me-2 mt-5">
+        @using (Html.BeginForm("JoinGroup", "Group", FormMethod.Post))
+        {
+
+            @Html.AntiForgeryToken()
+            <div class="form-floating mb-2 ">
+                <input type="text" class="form-control" placeholder="ML2023" required name="CodeOfGroup">
+                <label for="floatingInput11">Code</label>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-light " onclick="ShowCard1(0)">Close</button>
+                <input type="submit" value="Join" class="btn btn-light" />
+            </div>
+
+        }
+    </div>
+</div>
+
+@section bottom_Link{
+    <script>
+        var card = document.getElementById("add_group");
+        var card1 = document.getElementById("add_group1");
+        function ShowCard(val) {
+            if (val === 1) {
+                card.style.display = "block";
+                card1.style.display = "none";
+
+            } else {
+                card.style.display = "none";
+                card1.style.display = "none";
+            }
+        }
+
+        function ShowCard1(val) {
+            if (val === 1) {
+                card1.style.display = "block";
+                card.style.display = "none";
+
+            } else {
+                card.style.display = "none";
+                card1.style.display = "none";
+            }
+        }
+    </script>
+}

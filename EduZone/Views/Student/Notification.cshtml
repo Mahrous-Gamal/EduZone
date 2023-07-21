@@ -1,0 +1,166 @@
+﻿@using EduZone.Models.ViewModels
+@using Microsoft.AspNet.Identity;
+@model List<NotificationViewModel>
+@{
+    string classUnreadOrRead = null;
+
+    ViewBag.Title = "Notification";
+}
+<div class="cont ">
+    <header>
+        <div class="notifBox">
+            <h2 class="title">Notification</h2>
+            <span id="notifications">@ViewBag.numofnotification</span>
+        </div>
+        <p id="mark-all" onclick="markNotificationRead()">Mark all as read</p>
+    </header>
+    <main id="notify">
+        @foreach (var item in Model)
+        {
+            <a href="@Url.Action("NotificationIsReaded","Student",new { id = item.PostId })">
+                @if (item.IsReaded == false)
+                {
+                    classUnreadOrRead = "unread";
+                }
+                else
+                {
+                    classUnreadOrRead = "";
+                }
+                <div class="notify-card  @classUnreadOrRead">
+
+                    <img src="~/Images/@item.ImageOfCreatorPost" alt="Avatar" />
+                    <div class="description">
+                        @if (item.TypOfPost == "group")
+                        {
+                            <p class="user-activity">
+                                <strong> @item.NameOfCreatorPost </strong> Add New Post in  Group @item.GroupName
+                                <b></b>
+                            </p>
+                            <p class="time">@item.TimeOfNotifyAfterFormat</p>
+                        }
+                        else
+                        {
+                            <p class="user-activity">
+                                <strong> @item.NameOfCreatorPost </strong> Add New Post in TimeLine
+                                <b></b>
+                            </p>
+                            <p class="time">@item.TimeOfNotifyAfterFormat</p>
+                        }
+                    </div>
+                </div>
+
+            </a>
+        }
+
+    </main>
+</div>
+
+@section Top_Link{
+    <link href="~/Content/StyleSheet/notification.css" rel="stylesheet" />
+}
+
+@section bottom_Link{
+    <script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
+    <script src="~/Signalr/hubs"></script>
+
+    <script>
+        let prox3;
+        $(function () {
+            var con = $.hubConnection();
+            prox3 = con.createHubProxy("NotificationHub");
+            con.start();
+
+            prox3.on("NewNotificationFromGrop", function (postId, NameofPostCreator, image, time, groupName, typeOfpost) {
+                var newNotification = document.createElement("div");
+                if (groupName == null) {
+                    newNotification.innerHTML = `<a href="/Student/NotificationIsReaded/${postId}">
+                                            <div class="notify-card unread">
+                                            <img src="/Images/${image}" alt="Avatar" />
+                                            <div class="description">
+                                                 <p class="user-activity">
+                                                    <strong>${NameofPostCreator} </strong> Add New Post in TimeLine
+                                                    <b></b>
+                                                 </p>
+                                                 <p class="time">${time}</p>
+                                            </div>
+                                            </div>
+                                       </a>`;
+                }
+                else {
+                    newNotification.innerHTML = `<a href="/Student/NotificationIsReaded/${postId}">
+                                            <div class="notify-card unread">
+                                            <img src="/Images/${image}" alt="Avatar" />
+                                            <div class="description">
+                                                 <p class="user-activity">
+                                                    <strong>${NameofPostCreator} </strong> Add New Post in Group ${groupName}
+                                                    <b></b>
+                                                 </p>
+                                                 <p class="time">${time}</p>
+                                            </div>
+                                            </div>
+                                       </a>`;
+                }
+                var main = document.getElementById("notify");
+                main.insertAdjacentElement("afterbegin", newNotification);
+                var NumOfNotification = document.getElementById("notifications");
+                var currentValue = parseInt(NumOfNotification.innerText);
+                console.log(currentValue)
+                var newValue = currentValue + 1;
+                NumOfNotification.innerText = newValue;
+                console.log(newValue)
+
+            })
+            prox3.on("NotificationAfterMarkRead", function (postId, NameofPostCreator, image, time, groupName,x) {
+                if (x == 0) {
+                    var main = document.getElementById("notify");
+                    main.innerHTML = "";
+                }
+                var newNotification = document.createElement("div");
+                if (groupName == null) {
+                    newNotification.innerHTML = `<a href="/Student/NotificationIsReaded/${postId}">
+                                            <div class="notify-card ">
+                                            <img src="/Images/${image}" alt="Avatar" />
+                                            <div class="description">
+                                                 <p class="user-activity">
+                                                    <strong>${NameofPostCreator} </strong> Add New Post in TimeLine
+                                                    <b></b>
+                                                 </p>
+                                                 <p class="time">${time}</p>
+                                            </div>
+                                            </div>
+                                       </a>`;
+                }
+                else {
+                    newNotification.innerHTML = `<a href="/Student/NotificationIsReaded/${postId}">
+                                            <div class="notify-card ">
+                                            <img src="/Images/${image}" alt="Avatar" />
+                                            <div class="description">
+                                                 <p class="user-activity">
+                                                    <strong>${NameofPostCreator} </strong> Add New Post in Group ${groupName}
+                                                    <b></b>
+                                                 </p>
+                                                 <p class="time">${time}</p>
+                                            </div>
+                                            </div>
+                                       </a>`;
+                }
+                var main = document.getElementById("notify");
+                main.insertAdjacentElement("afterbegin", newNotification);
+                var NumOfNotification = document.getElementById("notifications");
+                NumOfNotification.innerText = "0";
+
+                console.log(NumOfNotification.innerText)
+                //list.insertBefore(newnotification, list.firstChild);
+            })
+        prox3.on("addUser", function (connectedid) {
+            var userid = '@User.Identity.GetUserId()';
+            prox3.invoke("onlineUser", userid, connectedid);
+            })
+        });
+        function markNotificationRead() {
+               var userid = '@User.Identity.GetUserId()';
+            prox3.invoke("markAllAsRead", userid);
+        }
+    </script>
+
+}

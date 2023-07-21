@@ -1,0 +1,40 @@
+.bx-message-alt-x{
+    color:#c3201f;
+    font-size:x-large;
+}
+.question_title{
+    height: 50px;
+}
+textarea {
+    padding: 10px 10px;
+    font-size: 18px;
+}
+
+.option_title{
+width: 95%;
+}
+
+input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    outline: none;
+    cursor: pointer;
+}
+
+    input[type="radio"]:checked {
+        background-color: #2196F3;
+        border-color: #2196F3;
+    }
+
+    input[type="radio"]:focus {
+        box-shadow: 0 0 3px 2px #2196F3;
+    }
+    input[type="radio"][disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }

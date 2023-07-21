@@ -1,0 +1,33 @@
+:root {
+    --Cprimary: #69B986;
+    --white: #FFF;
+  }
+  
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  body {
+    height: 100vh !important;
+  }
+  ::-webkit-scrollbar {
+    width: 15px;
+  
+  }
+  
+  ::-webkit-scrollbar-track {
+    background-color: rgb(250, 244, 244);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #439962;
+    border-radius: 20px;
+  }
+  a{
+    text-decoration: none;
+  }

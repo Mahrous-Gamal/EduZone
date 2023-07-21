@@ -1,0 +1,104 @@
+﻿﻿
+@section Top_Link{
+
+    <link href="~/Content/StyleSheet/addCourses.css" rel="stylesheet" />
+}
+@using EduZone.Models.ViewModels
+@model List<ExtraInfoOfMailOfDoctorViewModel>
+@{
+    ViewBag.Title = "AddEducatorMail";
+    string action = "/admin/AddEducatorMail";
+    string method = "post";
+    string valueOfbtn = "Add";
+    int cont = 1;
+}
+
+@if (ViewBag.curd == "update")
+{
+    action = "/admin/UpdateEducatorMail";
+    method = "Post";
+    valueOfbtn = "Update";
+}
+else if (ViewBag.curd == "delete")
+{
+    action = "/admin/DeleteEducatorMail";
+    method = "Post";
+    valueOfbtn = "Delete";
+}
+
+<div class="cont  d-flex rounded-2 mt-3 " id="blur">
+    <div class=" border shadow  rounded-3 p-2" style="width: 40%">
+        <form action="@action" method="@method">
+            <h1 style="text-align:center">Educator Mail</h1>
+            @if (ViewBag.mailExist != null)
+            {
+                <h5 style="color:red">@ViewBag.mailExist</h5>
+            }
+            <label class="form-label fw-semibold mt-2">Mail</label>
+            @if (ViewBag.mail != null)
+            {
+                <input class="form-control" type="email" name="email" value="@ViewBag.mail.DoctorMail">
+                @Html.Hidden("mailId", new { ViewBag.mail.ID })
+            }
+            else
+            {
+                <input class="form-control" type="email" name="email" value="">
+            }
+
+            <input type="submit" value="@valueOfbtn" class="btn btn-success mt-2" style="width:100%;">
+
+        </form>
+    </div>
+    <div class="w-50" style="margin-left:30px;">
+        <table class="table shadow table-hover table-responsive table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Name </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row">@cont</th>
+                        <td>@item.DoctorMail</td>
+                       
+                        <td>
+                            <a href="@Url.Action("UpdateEducatorMail","admin",new { mailId=item.ID })" class="btn btn-outline-success">Update</a>
+                            <a href="#" class="btn btn-outline-danger " onclick="toggle(@item.ID)" style="">Delete</a>
+
+                        </td>
+                    </tr>
+                    cont++;
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@section bottom_Link{
+    @*<script src="~/Scripts/jquery-3.6.4.js"></script>*@
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script>
+        var btn = document.getElementById("BtnYes");
+        // toggle blur and popup
+        function toggle(val) {
+            btn.href = '/Admin/DeleteEducatorMail/' + val;
+            let blur = document.getElementById("blur");
+            blur.classList.toggle("active");
+            let popup = document.getElementById("popup");
+            popup.classList.toggle("active");
+        }</script>
+}
+<div id="popup">
+    <h3>Do You Want Delete This Course?</h3>
+    <a href="" id="BtnYes" class="btn btn-danger delete">Yes</a>
+    <a href="#" class="btn btn-success" onclick="toggle(0)">No</a>
+</div>

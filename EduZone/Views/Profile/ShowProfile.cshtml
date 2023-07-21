@@ -1,0 +1,259 @@
+﻿
+@using EduZone.Models.ViewModels
+@using EduZone.Models
+@model ShowProfileViewModel
+@{
+    ViewBag.Title = "ShowProfile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ApplicationDbContext context = new ApplicationDbContext();
+}
+
+<section style="background-color: #eee;">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <img src="~/Images/@Model.user.Image" alt="avatar"
+                             class="rounded-circle img-fluid" style="width: 150px;">
+                        <h5 class="my-3">@Model.user.Name</h5>
+                        <div class="d-flex justify-content-center mb-2">
+                            <a href="/chat/Chat_with_one/@Model.user.Id" class="btn btn-outline-primary ms-1">Message</a>
+                        </div>
+                    </div>
+                </div>
+                @if (Model.educator != null)
+                        {
+                            var course = context.GetCourses.Where(e => e.DoctorOfCourse == Model.educator.AccountID);
+
+                    <div class="card mb-4 mb-lg-0">
+                        <div class="card-body p-0">
+                            <ul class="list-group list-group-flush rounded-3">
+                                <li class="list-group-item text-center d-flex justify-content-between align-items-center p-3">
+                                    <i class="fas fa-globe fa-lg text-warning"></i>
+                                    <p class="mb-0">Course</p>
+                                </li>
+                                @foreach (var item in course)
+                                {
+                                    <li class="list-group-item text-center d-flex justify-content-between align-items-center p-3">
+                                        <i class="fas fa-globe fa-lg text-warning"></i>
+                                        <p class="mb-0">@item.CourseName</p>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Full Name</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">@Model.user.Name</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Email</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">@Model.user.Email</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Phone</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">@Model.user.PhoneNumber</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Age</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">@Model.user.Age</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Address</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">@Model.user.Address</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Gender</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">@Model.user.Gender</p>
+                            </div>
+                        </div>
+                        <hr>
+                        @if (Model.educator != null)
+                        {
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Role</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">Educator</p>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Role</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">Student</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    @if (Model.educator != null)
+                    {
+                        <div class="col-md-6">
+                            <div class="card mb-4 mb-md-0">
+                                <div class="card-body">
+                                    <p class="mb-4">
+                                        <span class="text-primary font-italic me-1">Educator</span> information
+                                    </p>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p class="mb-0">Academic Degree</p>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <p class="text-muted mb-0">@Model.educator.AcademicDegree</p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p class="mb-0">office</p>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <p class="text-muted mb-0">@Model.educator.office</p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p class="mb-0">Available</p>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <p class="text-muted mb-0">@Model.educator.Available</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        string path = "#";
+                        if (Model.educator.CVURL != "")
+                        {
+                            path = "~/App_Data/CVs/" + Model.educator.CVURL;
+                        }
+
+                        <div class="col-md-6">
+                            <div class="card mb-4 mb-md-0">
+                                <div class="card-body">
+                                    <p class="mb-4">
+                                        <span class="text-primary font-italic me-1"></span> CV
+                                    </p>
+                                    <div class="d-flex justify-content-center mb-2">
+                                        <a href="@path" class="btn btn-outline-primary ms-1">Open CV</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    }
+                    else
+                    {
+                        <div class="col-md-6">
+                            <div class="card mb-4 mb-md-0">
+                                <div class="card-body">
+                                    <p class="mb-4">
+                                        <span class="text-primary font-italic me-1">Student</span> College information
+                                    </p>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p class="mb-0">Batch</p>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <p class="text-muted mb-0">@Model.student.Batch</p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p class="mb-0">College ID</p>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <p class="text-muted mb-0">@Model.student.CollegeID</p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p class="mb-0">Group Number</p>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <p class="text-muted mb-0">@Model.student.GroupNo</p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p class="mb-0">Department</p>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <p class="text-muted mb-0">@Model.student.Department</p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p class="mb-0">Section</p>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <p class="text-muted mb-0">@Model.student.Section</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card mb-4 mb-md-0">
+                                <div class="card-body">
+                                    <p class="mb-4">
+                                        <span class="text-primary font-italic me-1">GPA</span> Grade point average
+                                    </p>
+                                    @Model.student.GPA
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

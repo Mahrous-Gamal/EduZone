@@ -1,0 +1,125 @@
+﻿﻿﻿@using EduZone.Models
+@model List<Department>
+@{
+    ApplicationDbContext context = new ApplicationDbContext();
+    int cont = 1;
+    SelectList departments = null;
+    if (ViewBag.Department != null)
+    {
+        departments = new SelectList(ViewBag.Doctors, "Id", "Name", ViewBag.Department.AdminId);
+    }
+    else
+    {
+        departments = new SelectList(ViewBag.Doctors, "Id", "Name");
+    }
+
+    ViewBag.Title = "Index";
+    string action = "/Department/NewDepartment";
+    string method = "post";
+    string valueOfbtn = "Add";
+}
+
+@if (ViewBag.curd == "update")
+{
+    action = "/Department/UpdateDepartment";
+    method = "Post";
+    valueOfbtn = "Update";
+}
+else if (ViewBag.curd == "delete")
+{
+    action = "/Department/DeleteDepartment";
+    method = "Post";
+    valueOfbtn = "Delete";
+}
+
+<div class="cont d-flex rounded-2 mt-3" id="blur">
+    <div class="border shadow  rounded-3 p-2" style="width: 40%">
+        <form action="@action" method="@method">
+            <h1 style="text-align:center">Department</h1>
+            @if (ViewBag.Department != null)
+            {
+                <label class="form-label fw-semibold mt-2">Name</label>
+                <input class="form-control" type="text" name="name" value="@ViewBag.Department.Name">
+
+                <label class="form-label fw-semibold mt-2">Description</label>
+                <input class="form-control" type="text" name="description" value="@ViewBag.Department.Description">
+
+                @Html.Hidden("depId", new { ViewBag.Id })
+            }
+            else
+            {
+                <label class="form-label fw-semibold mt-2">Name</label>
+                <input class="form-control" type="text" name="name" value="">
+
+                <label class="form-label fw-semibold mt-2">Description</label>
+                <input class="form-control" type="text" name="description" value="">
+
+            }
+            <label class="form-label fw-semibold mt-2">Admin Of Department</label>
+
+            @Html.DropDownList("DepartmentID", departments, new { @class = "form-control" })
+
+            <input type="submit" value="@valueOfbtn" class="btn btn-success mt-2" style="width:100%;">
+
+
+        </form>
+    </div>
+    <div class="w-50" style="margin-left:30px;">
+        <table class="table shadow table-hover table-responsive table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Department Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Admin Of Dep </th>
+                    <th scope="col">Operations</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    string idx = item.AdminId;
+                    <tr>
+                        <th scope="row">@cont</th>
+                        <td>@item.Name</td>
+                        <td>@item.Description</td>
+                        <td>@context.Users.FirstOrDefault(e=>e.Id == idx).Name</td>
+                        <td>
+                            <a href="@Url.Action("UpdateDepartment","Department",new { depId=item.Id })" class="btn btn-outline-success">Update</a>
+                            @*<a href="@Url.Action("DeleteDepartment","Department",new { depId=item.Id },)" class="btn btn-danger">Delete</a>*@
+                            <a href="#" class="btn btn-outline-danger " onclick="toggle('@item.Id')" style="">Delete</a>
+
+                        </td>
+                    </tr>
+                    cont++;
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@section Top_Link{
+    <link href="~/Content/StyleSheet/addCourses.css" rel="stylesheet"   />
+}
+
+@section bottom_Link{
+    @*<script src="~/Scripts/jquery-3.6.4.js"></script>*@
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script>
+var btn = document.getElementById("BtnYes");
+        // toggle blur and popup
+        function toggle(val) {
+            btn.href = '/Department/DeleteDepartment/' + val;
+            let blur = document.getElementById("blur");
+            blur.classList.toggle("active");
+
+            let popup = document.getElementById("popup");
+            popup.classList.toggle("active");
+        }</script>
+}
+<div id="popup">
+    <h3>Do You Want Delete This Course ?</h3>
+    <a href="" id="BtnYes" class="btn btn-danger delete">Yes</a>
+    <a href="#" class="btn btn-success" onclick="toggle(0)">No</a>
+</div>

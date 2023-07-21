@@ -1,0 +1,142 @@
+body {
+    font-family: "Roboto Condensed", sans-serif;
+}
+
+.cont {
+    padding: 45px 25px;
+    margin: 30px auto;
+}
+
+.swiper {
+    width: 970px;
+}
+
+.swiper-pagination-lock {
+    display: block;
+    color: red;
+}
+
+.swiper-pagination-bullet {
+    height: 7px;
+    width: 26px;
+    border-radius: 25px;
+    background-color: #00cd69;
+}
+
+section .card .image {
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    padding: 3px;
+    margin-right: 6px;
+    background-color: #69b986;
+}
+
+    section .card .image img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 3px solid #fff;
+        object-fit: cover;
+    }
+
+.card {
+    height: 50%;
+    background-color: #eee;
+    border-radius: 20px;
+    margin: 68px 15;
+    width: 290px;
+}
+
+    .card::before {
+        content: "";
+        position: absolute;
+        height: 57%;
+        width: 100%;
+        background-color: #00cd69;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .card .card-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 30px;
+        position: relative;
+        z-index: 100;
+    }
+
+    .card .media-icons {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+        .card .media-icons i {
+            color: #fff;
+            opacity: 0.6;
+            margin-top: 10px;
+            cursor: pointer;
+            font-size: 25px;
+            transition: 0.3s ease-in-out;
+        }
+
+        .card .media-icons img {
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            border-radius: 50%;
+            margin-top: 9px;
+            opacity: 0.6;
+            transition: 0.3s ease-in-out;
+        }
+
+            .card .media-icons img:hover,
+            .card .media-icons i:hover {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+
+    .card .name-profession {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 10px;
+        color: #333;
+    }
+
+        .card .name-profession .name {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .card .name-profession .profession {
+            font-size: 15px;
+            font-weight: 400;
+            margin-top: 5px;
+        }
+
+    .card .button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+        .card .button button {
+            background-color: #00cd69;
+            color: white;
+            outline: none;
+            border: none;
+            padding: 8px 22px;
+            border-radius: 20px;
+            font-size: 14px;
+            transition: 0.3s ease-in-out;
+        }
+
+            .card .button button:hover {
+                background-color: #017f41;
+            }

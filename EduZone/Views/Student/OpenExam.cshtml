@@ -1,0 +1,126 @@
+﻿@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "OpenExam";
+}
+@using EduZone.Models
+@model Exam
+@{
+    ViewBag.Title = "UpdateExam";
+    ApplicationDbContext context = new ApplicationDbContext();
+    var Groups = context.GetGroups.Where(e => e.CreatorID == Model.CreatorID);
+    var Num = context.GetQuestions.Where(e => e.ExamId == Model.Id).Count();
+    var Qestions = context.GetQuestions.Where(e => e.ExamId == Model.Id).ToList();
+    var idx = Model.CreatorID;
+    var Userx = context.Users.FirstOrDefault(e => e.Id == idx);
+    string name = "";
+    if (Userx != null)
+    {
+        name = Userx.Name;
+    }
+}
+
+@section Top_Link{
+    <link href="~/Content/StyleSheet/create-exam.css" rel="stylesheet" />
+}
+
+
+<main class="container my-3 main-profile">
+    <form method="post" class="bg-light p-4" action="/Student/SaveExam/@Model.Id">
+        <div class='form-info'>
+            <h3 class="mb-3"> Exam Details </h3>
+            <div class="p-2">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <h4>Exam Title : <span class="badge text-bg-light">@Model.FormTitle</span> </h4>
+                    </li>
+                    <li class="list-group-item">
+                        
+                        <h4>Doctor : <span class="badge text-bg-light">@name</span> </h4>
+                    </li>
+                    <li class="list-group-item">
+                        <h4>Group Name : <span class="badge text-bg-light">@Model.GroupName</span> </h4>
+                    </li>
+                    <li class="list-group-item">
+                        <h4>Time : <span class="badge text-bg-light">  2 hours</span></h4>
+                    </li>
+                </ul>
+            </div>
+            <div class="p-2">
+                <label class="form-label"><span class="fw-bold text-danger" style="font-size:20px">*</span> Student Name</label>
+                <input required type="text" name="StudentName" class="form-control" />
+
+                <label class="form-label mt-1"><span class="fw-bold text-danger" style="font-size:20px">*</span> Sitting Number</label>
+                <input required type="text" name="SNumber" class="form-control" />
+                <input type="hidden" name="Student_ID" value="@User.Identity.GetUserId()"  />
+            </div>
+            <!-- All-Q  -->
+
+            <hr />
+
+            <div class='questions container' id='questions_id'>
+                <h3 class="my-5"><span class="fw-bold text-danger" style="font-size:20px">*</span>  Questions (@Num) </h3>
+                <!-- q-n-  -->
+                @for (int i = 0; i < Num; i++)
+                {
+                    int valx = Qestions[i].Id;
+                    string Q = $"Q{i}";
+                    string QNID = $"QNtxt{i}";
+                    string QInput = $"QInput{i}";
+                    string QO = $"Q{i}O";
+                    string ON = $"ON{i}";
+                    <div class='question row' id="@Q">
+                        <div class="col-11">
+                            <!-- Q-H -->
+                            <div class="input-group mb-3">
+                                <div class="input-group-text">
+                                    <label class='m-0 question_number' id="@QNID">@Q</label>
+                                </div>
+                                <textarea readonly id="@QInput" name="@Q" class="form-control question_title" placeholder='Enter the question title...'>@Qestions[i].QuestionText</textarea>
+                            </div>
+                            <!-- Q-H -->
+                            <!-- O-n-  -->
+                            <div class='m-3'>
+                                <div id="@QO">
+                                    <input type="text" style="display: none;" value="@context.GetQuestionOptions.Where(e => e.QuestionId == valx).Count()" id="@ON">
+                                    @{
+
+                                        var QOptions = context.GetQuestionOptions.Where(e => e.QuestionId == valx).ToList();
+                                        for (int j = 0; j < QOptions.Count(); j++)
+                                        {
+                                            string O = $"O{i}{j}";
+                                            string QR = $"Q{i}R{j}";
+                                            string QRN = $"QR{i}";
+                                            string QI = $"Q{i}I{j}";
+
+                                            <div class="input-group mb-3 option" id="@O">
+                                                <div class="input-group-text">
+                                                    <input class=" mt-0 p-0 " value="@j" id="@QR" type="radio" name="@QRN" required>
+                                                </div>
+                                                <input readonly id="@QI" name="@QI" class="form-control option_title" type="text" placeholder='Enter the option title...' value="@QOptions[j].OptionContent">
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                                <div class="mx-3 d-inline">
+                                    <span>@Qestions[i].Point Points</span>
+                                </div>
+                            </div>
+                            <!-- O-n-  -->
+                        </div>
+
+                        <hr>
+                    </div>
+                }
+                <!-- q-n-  -->
+            </div>
+            <!-- All-Q  -->
+            <div class="form-check">
+                <input class="form-check-input" name="Send" type="checkbox" value="1" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                    send to email address
+                </label>
+            </div>
+            <input type="submit" value="Submit" class="btn btn-success mt-2 btn-lg">
+        </div>
+    </form>
+</main>

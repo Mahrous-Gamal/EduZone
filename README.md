@@ -1,0 +1,2 @@
+# EduZone
+- Collage Management System

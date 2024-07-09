@@ -72,12 +72,14 @@ namespace EduZone.Controllers
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
-            {
+        {
+            
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-
+            AddRoles();
+            //
             var user = context.Users.FirstOrDefault(e => e.Email == model.Email);
             if(model.Email == "Admin@compit.aun.edu.eg"&&model.Password =="Hes100@"&&user == null)
             {
@@ -97,7 +99,7 @@ namespace EduZone.Controllers
                 };
                 var result = await UserManager.CreateAsync(admin, model.Password);
                 await UserManager.AddToRoleAsync(admin.Id, "Admin");
-                return RedirectToAction("Index", "Admin");
+                return RedirectToAction("Dashboard", "Admin");
             }
             if (user != null)
             {
@@ -211,6 +213,7 @@ namespace EduZone.Controllers
         {
             if (ModelState.IsValid)
             {
+                AddRoles();
                 applicationUser = new ApplicationUser
                 {
                     Name = model.Name,
@@ -218,7 +221,7 @@ namespace EduZone.Controllers
                     Email = model.Email,
                     Address = model.Address,
                     NationalID = model.NationalID,
-                    EmailActive = false,
+                    EmailActive = true,
                     Image = "Profile.jpeg",
                     Gender = "",
                     Age = 18,
@@ -624,5 +627,33 @@ namespace EduZone.Controllers
             }
         }
         #endregion
+
+        private  void AddRoles()
+        {
+            if (context.Roles.FirstOrDefault(r=>r.Name =="Admin")==null)
+            {
+                RoleStore<IdentityRole> store = new RoleStore<IdentityRole>(context);
+                RoleManager<IdentityRole> manger = new RoleManager<IdentityRole>(store);
+                IdentityRole role = new IdentityRole();
+                role.Name = "Admin";
+                  manger.Create(role);
+            }
+            if (context.Roles.FirstOrDefault(r => r.Name == "Student") == null)
+            {
+                RoleStore<IdentityRole> store = new RoleStore<IdentityRole>(context);
+                RoleManager<IdentityRole> manger = new RoleManager<IdentityRole>(store);
+                IdentityRole role = new IdentityRole();
+                role.Name = "Student";
+                manger.Create(role);
+            }
+            if (context.Roles.FirstOrDefault(r => r.Name == "Educator") == null)
+            {
+                RoleStore<IdentityRole> store = new RoleStore<IdentityRole>(context);
+                RoleManager<IdentityRole> manger = new RoleManager<IdentityRole>(store);
+                IdentityRole role = new IdentityRole();
+                role.Name = "Educator";
+                manger.Create(role);
+            }
+        }
     }
 }
